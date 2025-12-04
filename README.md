@@ -11,12 +11,12 @@ O projeto segue uma arquitetura IoT clássica:
 |  ESP32  |----->|  Broker MQTT    |<-----|    Backend      |----->|     MongoDB       |
 | Sensor  |      | (ex: Mosquitto) |      | (ex: Node.js)   |      |     Database      |
 +---------+      +-----------------+      +-----------------+      +-------------------+
-    |                    ^
-    | (Publica Dados)    | (Inscreve-se nos Tópicos)
-    |                    |
-    v                    |
-[Tópico: /temperature]   |
-[Tópico: /humidity]      |
+    |                                              ^
+    | (Publica Dados)                              | (Inscreve-se nos Tópicos)
+    |                                              |
+    v                                              |
+[Tópico: /temperature]                             |
+[Tópico: /humidity]                                |
 ```
 
 1.  **ESP32:** Um microcontrolador responsável por ler a temperatura e a umidade de um sensor conectado (como DHT11/DHT22).
