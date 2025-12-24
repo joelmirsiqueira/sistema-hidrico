@@ -1,5 +1,11 @@
 tmp.txt
 
+build/
 node_modules/
 
-.env
+sdkconfig*
+
+.env.*
+
+# excludes
+!.env.exemple
