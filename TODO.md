@@ -6,7 +6,7 @@ Este arquivo descreve todos os passos necessários para desenvolver o projeto de
 
 - [x] **Controle de Versão:**
   - [x] Iniciar um repositório Git para o projeto.
-  - [x] Criar uma estrutura de pastas (ex: `/firmware-esp32`, `/backend`).
+  - [x] Criar uma estrutura de pastas (`/backend`, `/firmware-esp32`, `frontend`).
 
 - [x] **Broker MQTT:**
   - [x] Instalar e configurar um broker MQTT (ex: Mosquitto) localmente ou usar um serviço em nuvem.
