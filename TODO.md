@@ -1,20 +1,20 @@
-# Lista de Tarefas - Projeto IoT de Monitoramento
+# Lista de Tarefas - Sistema de Monitoramento e Gestão Hídrica
 
-Este arquivo descreve todos os passos necessários para desenvolver o projeto de monitoramento de temperatura e umidade com ESP32, MQTT e MongoDB.
+Este arquivo descreve os passos para desenvolver o sistema de gestão hídrica com ESP32, MQTT, Node.js, React e MongoDB.
 
 ##  Fase 1: Configuração do Ambiente e Infraestrutura
 
 - [x] **Controle de Versão:**
-  - [x] Iniciar um repositório Git para o projeto.
-  - [x] Criar uma estrutura de pastas (`/backend`, `/firmware-esp32`, `frontend`).
+  - [x] Iniciar um repositório Git.
+  - [x] Estrutura de pastas (`/backend`, `/firmware-esp32`, `/frontend`).
 
 - [x] **Broker MQTT:**
-  - [x] Instalar e configurar um broker MQTT (ex: Mosquitto) localmente ou usar um serviço em nuvem.
-  - [x] Testar a publicação e subscrição de mensagens para validar o broker.
+  - [x] Instalar e configurar Broker MQTT (Mosquitto ou HiveMQ).
+  - [x] Testar pub/sub.
 
 - [x] **Banco de Dados:**
-  - [x] Instalar e configurar uma instância do MongoDB localmente ou usar um serviço em nuvem (ex: MongoDB Atlas).
-  - [x] Criar o banco de dados e a coleção para armazenar os dados de telemetria.
+  - [x] Configurar MongoDB (Atlas ou local).
+  - [x] Criar database para o sistema.
 
 ## Fase 2: Desenvolvimento do Firmware (ESP32 com ESP-IDF)
 
@@ -25,14 +25,16 @@ Este arquivo descreve todos os passos necessários para desenvolver o projeto de
   - [x] Implementar a lógica para conectar o ESP32 a uma rede Wi-Fi.
   - [x] Armazenar as credenciais de forma segura (ex: via `menuconfig`).
 
-- [x] **Integração com Sensor:**
-  - [x] Escolher e adicionar o componente/driver para o sensor de temperatura e umidade (ex: DHT11/DHT22).
-  - [x] Implementar a função para ler os dados do sensor.
+- [ ] **Sensores e Atuadores (Hardware):**
+  - [ ] **Fluxo:** Implementar leitura de pulsos para os sensores de fluxo (YF-S201).
+  - [ ] **Nível:** Implementar leitura do sensor ultrassônico (HC-SR04 ou JSN-SR04T).
+  - [ ] **Válvulas:** Implementar controle de GPIO para acionamento dos relés das válvulas solenoide.
 
-- [x] **Cliente MQTT:**
-  - [x] Adicionar o componente MQTT do ESP-IDF ao projeto.
-  - [x] Implementar a lógica para conectar o ESP32 ao broker MQTT.
-  - [x] Criar funções para publicar os dados lidos do sensor nos tópicos corretos (ex: `/sensor/temperatura` e `/sensor/umidade`).
+- [ ] **Lógica e MQTT:**
+  - [ ] Conectar ao broker MQTT.
+  - [ ] **Publicação:** Enviar telemetria de nível (`/sensor/nivel`) e fluxo (`/sensor/fluxo`) periodicamente.
+  - [ ] **Subscrição:** Escutar tópico de comando das válvulas (`/comando/valvula`).
+  - [ ] Implementar ação de abrir/fechar válvulas ao receber mensagem MQTT.
 
 - [x] **Lógica Principal:**
   - [x] Criar a tarefa principal que:
@@ -46,40 +48,55 @@ Este arquivo descreve todos os passos necessários para desenvolver o projeto de
 
 ## Fase 3: Desenvolvimento do Backend (Node.js)
 
-- [x] **Inicialização do Projeto:**
-  - [x] Iniciar um novo projeto Node.js (`npm init -y`).
-  - [x] Instalar as dependências principais: `express`, `mqtt`, `mongodb` (ou `mongoose`), `dotenv`.
+- [x] **Inicialização:**
+  - [x] Projeto Node.js, dependências (`express`, `mqtt`, `mongoose`, `dotenv`).
 
-- [ ] **Conexão com Banco de Dados:**
-  - [x] Implementar a lógica para se conectar ao banco de dados MongoDB.
-  - [ ]Criar um módulo para gerenciar a conexão com o MongoDB.
-  - [ ] Definir um Schema/Modelo para os dados de telemetria (ex: `timestamp`, `type`, `value`).
+- [ ] **Banco de Dados (MongoDB):**
+  - [x] Conexão Mongoose.
+  - [ ] **Definição de Schemas (Models):**
+    - [ ] `LeituraNivel` (timestamp, valor).
+    - [ ] `LeituraConsumo` (timestamp, clienteId, volume).
+    - [ ] `Cliente` (dados cadastrais, status, unidade).
+    - [ ] `Usuario` (login, senha, tipo: cliente/funcionario).
 
 - [ ] **Serviço MQTT:**
-  - [ ] Criar um serviço para se conectar ao broker MQTT.
-  - [ ] Implementar a lógica para se inscrever (subscribe) nos tópicos de temperatura e umidade.
-  - [ ] Implementar o handler que será executado ao receber uma nova mensagem.
+  - [ ] Subscrever aos tópicos de sensores (`/sensor/+`).
+  - [ ] Processar e salvar dados de nível e consumo no banco.
+  - [ ] Implementar função para publicar comandos de controle de válvulas.
 
-- [ ] **Lógica de Negócio:**
-  - [ ] No handler de mensagens MQTT, processar os dados recebidos.
-  - [ ] Salvar os dados processados no MongoDB, associando um timestamp.
+- [ ] **API REST (Express):**
+  - [ ] **Autenticação:** Login e middleware de proteção de rotas.
+  - [ ] **Rotas de Cliente:** Consultar consumo, status da unidade e cronograma.
+  - [ ] **Rotas de Funcionário:**
+    - [ ] Dashboard de nível do reservatório.
+    - [ ] Controle de válvulas (acionar via MQTT).
+    - [ ] Gestão de clientes (CRUD).
 
 - [ ] **Configuração:**
   - [ ] Criar um arquivo `.env` para armazenar as variáveis de ambiente (URL do MongoDB, endereço do broker MQTT).
   - [ ] Carregar as variáveis de ambiente na aplicação usando `dotenv`.
+## Fase 4: Desenvolvimento do Frontend (React)
 
-- [ ] **API (Opcional):**
-  - [ ] Criar rotas com Express para expor os dados salvos (ex: `GET /dados/temperatura`).
+- [ ] **Inicialização:**
+  - [ ] Criar projeto React (Vite ou CRA).
+  - [ ] Configurar rotas e bibliotecas (Axios, Chart.js, etc).
 
-- [ ] **Testes:**
-  - [ ] Testar o backend de forma isolada, publicando mensagens manualmente no broker e verificando se são salvas no banco.
+- [ ] **Interfaces de Usuário:**
+  - [ ] **Login:** Tela de acesso para clientes e funcionários.
+  - [ ] **Portal do Cliente:**
+    - [ ] Exibir consumo atual e histórico.
+    - [ ] Exibir status do abastecimento e alertas.
+  - [ ] **Portal do Funcionário:**
+    - [ ] **Monitoramento:** Gráfico em tempo real do nível do reservatório.
+    - [ ] **Operacional:** Botões para abrir/fechar comportas (válvulas).
+    - [ ] **Administrativo:** Lista de clientes e alteração de status.
 
-## Fase 4: Integração e Finalização
+## Fase 5: Integração e Finalização
 
 - [ ] **Teste End-to-End:**
-  - [ ] Executar todos os componentes (Firmware, Broker, Backend, Banco de Dados) simultaneamente.
-  - [ ] Verificar se o fluxo completo, desde a leitura do sensor até o armazenamento no banco, está funcionando como esperado.
+  - [ ] Validar fluxo completo: Sensor -> MQTT -> Backend -> DB -> Frontend.
+  - [ ] Validar comando remoto: Frontend -> Backend -> MQTT -> ESP32 -> Válvula.
 
 - [ ] **Documentação:**
-  - [ ] Revisar e atualizar o `README.md` com as instruções finais de configuração e execução do projeto.
-  - [ ] Adicionar comentários importantes no código.
+  - [ ] Atualizar instruções de instalação e execução.
+  - [ ] Documentar API e tópicos MQTT.
