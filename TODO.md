@@ -78,7 +78,7 @@ Este arquivo descreve os passos para desenvolver o sistema de gestão hídrica c
 ## Fase 4: Desenvolvimento do Frontend (React)
 
 - [ ] **Inicialização:**
-  - [ ] Criar projeto React (Vite ou CRA).
+  - [ ] Criar projeto React com **Vite**.
   - [ ] Configurar rotas e bibliotecas (Axios, Chart.js, etc).
 
 - [ ] **Interfaces de Usuário:**
