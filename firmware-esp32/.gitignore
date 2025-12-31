@@ -1,0 +1,4 @@
+build/
+
+# Aquivos de configuração do projeto
+sdkconfig*
