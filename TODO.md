@@ -27,14 +27,14 @@ Este arquivo descreve os passos para desenvolver o sistema de gestão hídrica c
 
 - [ ] **Sensores e Atuadores (Hardware):**
   - [ ] **Fluxo:** Implementar leitura de pulsos para os sensores de fluxo (YF-S201).
-  - [ ] **Nível:** Implementar leitura do sensor ultrassônico (HC-SR04 ou JSN-SR04T).
-  - [ ] **Válvulas:** Implementar controle de GPIO para acionamento dos relés das válvulas solenoide.
+  - [x] **Nível:** Implementar leitura do sensor ultrassônico (HC-SR04 ou JSN-SR04T).
+  - [x] **Válvulas:** Implementar controle de GPIO para acionamento dos relés das válvulas solenoide.
 
 - [ ] **Lógica e MQTT:**
-  - [ ] Conectar ao broker MQTT.
-  - [ ] **Publicação:** Enviar telemetria de nível (`/sensor/nivel`) e fluxo (`/sensor/fluxo`) periodicamente.
-  - [ ] **Subscrição:** Escutar tópico de comando das válvulas (`/comando/valvula`).
-  - [ ] Implementar ação de abrir/fechar válvulas ao receber mensagem MQTT.
+  - [x] Conectar ao broker MQTT.
+  - [x] **Publicação:** Enviar telemetria de nível (`/sensor/nivel`) e fluxo (`/sensor/fluxo`) periodicamente.
+  - [x] **Subscrição:** Escutar tópico de comando das válvulas (`/comando/valvula`).
+  - [x] Implementar ação de abrir/fechar válvulas ao receber mensagem MQTT.
 
 - [x] **Lógica Principal:**
   - [x] Criar a tarefa principal que:
@@ -57,7 +57,7 @@ Este arquivo descreve os passos para desenvolver o sistema de gestão hídrica c
     - [ ] `LeituraNivel` (timestamp, valor).
     - [ ] `LeituraConsumo` (timestamp, clienteId, volume).
     - [ ] `Cliente` (dados cadastrais, status, unidade).
-    - [ ] `Usuario` (login, senha, tipo: cliente/funcionario).
+    - [x] `Usuario` (login, senha, tipo: cliente/funcionario).
 
 - [ ] **Serviço MQTT:**
   - [ ] Subscrever aos tópicos de sensores (`/sensor/+`).
