@@ -10,9 +10,9 @@ const options = {
             version: '1.0.0',
         },
     },
-    apis: ['./routers/routers.js']
+    apis: ['./routers/routers.js', './routers/usuario.router.js']
 }
 
-const openapiSpecification = swaggerJSDoc(options);
+const documentacao = swaggerJSDoc(options);
 
-export default openapiSpecification;
+export default documentacao;
