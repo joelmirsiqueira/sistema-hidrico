@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-async function mongooseConnectAsync() {
+async function dbConnectAsync() {
     const url = process.env.MONGODB_URL;
     try {
         mongoose.set('strictQuery', true);
@@ -8,7 +8,8 @@ async function mongooseConnectAsync() {
         console.log('Conectado ao MongoDB');
     } catch (error) {
         console.error('Erro ao conectar ao MongoDB:', error);
+        throw error;
     }
 }
 
-export default mongooseConnectAsync;
+export default dbConnectAsync;
