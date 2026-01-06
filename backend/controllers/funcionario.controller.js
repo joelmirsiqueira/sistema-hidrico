@@ -22,10 +22,25 @@ export async function listarFuncionarios(req, res) {
         const funcionarios = await Usuario.find({ tipo: 'funcionario' })
 
         if (!funcionarios) {
-            return res.status(404).json({ error: 'Nenhum usuário encontrado' });
+            return res.status(404).json({ error: 'Nenhum funcionário encontrado' });
         }
+
         res.status(200).json(funcionarios);
     } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+export async function listarClientes(req, res) {
+    try {
+        const clientes = await Usuario.find({ tipo: 'cliente' })
+
+        if (!clientes) {
+            return res.status(404).json({ error: 'Nenhum cliente encontrado' });
+        }
+
+        res.status(200).json(clientes);
+        } catch (error) {
         res.status(500).json({ error: error.message });
     }
 }
