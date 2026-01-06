@@ -7,3 +7,8 @@ node_modules/
 *.local
 *.development
 
+.env.*
+
+# excludes
+!.env.exemple
+*.drawio.bkp
