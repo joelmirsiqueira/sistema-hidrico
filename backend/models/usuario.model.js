@@ -22,8 +22,8 @@ const UsuarioSchema = new mongoose.Schema({
     },
     tipo: {
         type: String,
-        default: 'cliente',
         enum: ['cliente', 'funcionario'],
+        default: 'cliente',
         required: true,
         lowercase: true,
         trim: true,

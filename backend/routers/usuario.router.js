@@ -1,7 +1,7 @@
 import { Router } from "express";
 import usuarioDto from "../dtos/usuario.dto.js";
 import validador from "../dtos/validador.middleware.js";
-import { adicionarUsuario } from "../controllers/usuario.controller.js";
+import { adicionarUsuario } from "../controllers/funcionario.controller.js";
 
 
 const usuarioRouters = Router();

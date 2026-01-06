@@ -1,3 +1,5 @@
+import e from "express";
+
 const validador = (schema) => (req, res, next) => {
     try {
         // Valida o corpo da requisição e atualiza req.body com os dados tipados/limpos
@@ -5,10 +7,8 @@ const validador = (schema) => (req, res, next) => {
         next();
     } catch (error) {
         // Retorna os erros de validação formatados
-        return res.status(400).json({
-            error: "Erro de validação",
-            detalhes: error.errors.map(e => ({ campo: e.path[0], mensagem: e.message }))
-        });
+        const message = JSON.parse(error.message);
+        return res.status(400).json({ error: message.map(e => e.message) });
     }
 };
 
