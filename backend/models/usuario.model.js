@@ -5,11 +5,16 @@ const UsuarioSchema = new mongoose.Schema({
     nome: {
         type: String,
         required: true,
+        trim: true,
+        lowercase: true,
+        minLength: 3,
     },
     email: {
         type: String,
         required: true,
         unique: true,
+        trim: true,
+        lowercase: true,
     },
     senha: {
         type: String,
@@ -18,7 +23,10 @@ const UsuarioSchema = new mongoose.Schema({
     tipo: {
         type: String,
         default: 'cliente',
-        enum: ['cliente', 'funcionario', 'admin'],
+        enum: ['cliente', 'funcionario'],
+        required: true,
+        lowercase: true,
+        trim: true,
     },
 },
 {timestamps: true}
