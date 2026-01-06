@@ -1,7 +1,7 @@
 import { Router } from "express";
 import usuarioDto from "../dtos/usuario.dto.js";
 import validador from "../dtos/validador.middleware.js";
-import { adicionarUsuario } from "../controllers/funcionario.controller.js";
+import { adicionarUsuario, listarFuncionarios } from "../controllers/funcionario.controller.js";
 
 
 const usuarioRouters = Router();
@@ -15,5 +15,7 @@ const usuarioRouters = Router();
  *              201: usuário criado com sucesso.
 */
 usuarioRouters.post('/usuario', validador(usuarioDto), adicionarUsuario);
+
+usuarioRouters.get('/funcionario', listarFuncionarios);
 
 export default usuarioRouters;

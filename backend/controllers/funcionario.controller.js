@@ -16,3 +16,16 @@ export async function adicionarUsuario(req, res) {
         res.status(500).json({ error: error.message });
     }
 }
+
+export async function listarFuncionarios(req, res) {
+    try {
+        const funcionarios = await Usuario.find({ tipo: 'funcionario' })
+
+        if (!funcionarios) {
+            return res.status(404).json({ error: 'Nenhum usuário encontrado' });
+        }
+        res.status(200).json(funcionarios);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
