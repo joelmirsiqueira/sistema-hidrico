@@ -1,7 +1,8 @@
 import { Router } from "express";
 import usuarioDto from "../dtos/usuario.dto.js";
 import validador from "../dtos/validador.middleware.js";
-import { adicionarUsuario, listarFuncionarios, listarClientes } from "../controllers/funcionario.controller.js";
+import { adicionarUsuario, listarFuncionarios, listarClientes, listarRelatos} from "../controllers/funcionario.controller.js";
+import { CriarRelato } from "../controllers/cliente.controller.js";
 
 
 const usuarioRouters = Router();
@@ -19,5 +20,9 @@ usuarioRouters.post('/usuario', validador(usuarioDto), adicionarUsuario);
 usuarioRouters.get('/funcionario', listarFuncionarios);
 
 usuarioRouters.get('/cliente', listarClientes);
+
+usuarioRouters.post('/relato', CriarRelato);
+
+usuarioRouters.get('/relatos', listarRelatos);
 
 export default usuarioRouters;
