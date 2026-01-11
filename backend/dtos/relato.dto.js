@@ -1,0 +1,9 @@
+import { z } from "zod";
+
+const relatoDto = z.object({
+    cliente: z.string().min(3, "O nome deve ter pelo menos 3 caracteres"),
+    mensagem: z.string().min(3, "A mensagem deve ter pelo menos 20 caracteres"),
+    status: z.enum(['lido', 'não lido'], "Status deve ser lido ou não lido").optional()
+});
+
+export default relatoDto;
