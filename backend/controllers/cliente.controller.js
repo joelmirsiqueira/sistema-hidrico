@@ -1,14 +1,14 @@
 import Relato from "../models/relato.model.js";
 
 export async function CriarRelato(req, res) {
-    const { cliente, mensagem } = req.body;
+    const { usuario, mensagem } = req.body;
 
-    if (!cliente || !mensagem) {
+    if (!usuario || !mensagem) {
         return res.status(400).json({ error: 'Cliente e mensagem são campos obrigatórios' });
     }
 
     try {
-        const relato = await Relato.create({ cliente, mensagem });
+        const relato = await Relato.create({ usuario, mensagem });
         res.status(201).json(relato);
     } catch (error) {
         res.status(500).json({ error: error.message });
