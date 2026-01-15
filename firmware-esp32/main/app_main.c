@@ -18,7 +18,7 @@
 static const char *TAG = "app_main";
 
 #define TOPICO_NIVEL "sgh/reservatorio/nivel"
-#define TOPICO_CONSUMOS "sgh/consumos/cliente"
+#define TOPICO_CONSUMO_CLIENTE "sgh/consumo/cliente"
 #define TOPICO_COMPORTA_STATUS "sgh/reservatorio/comporta/status"
 #define TOPICO_COMPORTA_ACIONAR "sgh/reservatorio/comporta/acionar"
 
@@ -290,7 +290,7 @@ static void fluxometro_task(void *pvParameters)
                     float litros = (float)pulsos_atuais / PULSOS_POR_LITRO;
                     char topic[128];
                     char payload[16];
-                    snprintf(topic, sizeof(topic), "%s/%s", TOPICO_CONSUMOS, tabela_clientes[i].id);
+                    snprintf(topic, sizeof(topic), "%s/%s", TOPICO_CONSUMO_CLIENTE, tabela_clientes[i].id);
                     snprintf(payload, sizeof(payload), "%.3f", litros);
 
                     esp_mqtt_client_publish(cliente_mqtt, topic, payload, 0, 0, 0);
