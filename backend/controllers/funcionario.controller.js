@@ -6,14 +6,20 @@ import Relato from '../models/relato.model.js';
 
 export async function adicionarUsuario(req, res) {
     const { nome, email, senha, tipo } = req.body;
+
     try {
-        const usuario = await Usuario.create({ nome, email, senha, tipo });
-        console.log(tipo);
-        
+        let usuario;
+
+        if (tipo === 'cliente') {
+            const {codigo, endereco, statusAbastecimento } = req.body;
+            usuario = await Usuario.create({codigo,nome, email, senha, tipo, endereco, statusAbastecimento });
+        } else {
+            usuario = await Usuario.create({nome, email, senha, tipo });
+        }
         res.status(201).json(usuario);
     } catch (error) {
         if (error.code === 11000) {
-            return res.status(400).json({ error: 'Email já cadastrado' });
+            return res.status(409).json({ error: 'Email já cadastrado' });
         }
         res.status(500).json({ error: error.message });
     }
@@ -42,7 +48,7 @@ export async function listarClientes(req, res) {
         }
 
         res.status(200).json(clientes);
-        } catch (error) {
+    } catch (error) {
         res.status(500).json({ error: error.message });
     }
 }
@@ -54,7 +60,7 @@ export async function listarRelatos(req, res) {
         if (!relatos) {
             return res.status(404).json({ error: 'Nenhum relato encontrado' });
         }
-        
+
         res.status(200).json(relatos);
     } catch (error) {
         res.status(500).json({ error: error.message });
