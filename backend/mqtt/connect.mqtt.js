@@ -20,12 +20,17 @@ async function mqttConnectAsync() {
 }
 
 async function mqttSubscribeAsync(client) {
-    const topicSubscribe = process.env.MQTT_TOPIC_SUBSCRIBE;
-    if (!topicSubscribe) {
+    const nivel = process.env.MQTT_TOPIC_NIVEL;
+    const consumo = process.env.MQTT_TOPIC_CLIENTE_CONSUMO + '/#';
+    const comporta = process.env.MQTT_TOPIC_COMPORTA_STATUS + '/#';
+    const log = process.env.MQTT_TOPIC_ERROR_LOG;
+    if (!nivel || !consumo || !comporta || !log) {
         throw new Error('Tópico de subscrição não especificado');
     }
     try {
-        await client.subscribeAsync(topicSubscribe + '/#');
+        for (const topic of [nivel, consumo, comporta, log]) {
+            await client.subscribeAsync(topic);
+        }
         console.log('Inscrito nos tópicos MQTT');
     } catch (error) {
         console.error('Erro ao se inscrever no tópico MQTT:', error);
