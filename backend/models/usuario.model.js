@@ -1,7 +1,29 @@
 import mongoose from "mongoose";
 
+const enderecoSchema = new mongoose.Schema({
+    rua: {
+        type: String,
+        required: true,
+        trim: true,
+        lowercase: true,
+    },
+    numero: {
+        type: Number,
+        required: true,
+    },
+    bairro: {
+        type: String,
+        required: true,
+        trim: true,
+        lowercase: true,
+    }
+}, { _id: false });
 
 const UsuarioSchema = new mongoose.Schema({
+    codigo: {
+        type: Number,
+        required: true,
+    },
     nome: {
         type: String,
         required: true,
@@ -23,8 +45,23 @@ const UsuarioSchema = new mongoose.Schema({
     tipo: {
         type: String,
         enum: ['cliente', 'funcionario'],
-        default: 'cliente',
         required: true,
+        lowercase: true,
+        trim: true,
+    },
+    endereco: {
+        type: enderecoSchema,
+        required: function() {
+            return this.tipo === 'cliente';
+        }
+    },
+    statusAbastecimento: {
+        type: String,
+        enum: ['ativo', 'inativo'],
+        default: 'inativo',
+        required: function() {
+            return this.tipo === 'cliente';
+        },
         lowercase: true,
         trim: true,
     },
