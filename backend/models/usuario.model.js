@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcryptjs from 'bcryptjs';
 
 const enderecoSchema = new mongoose.Schema({
     rua: {
@@ -22,7 +23,11 @@ const enderecoSchema = new mongoose.Schema({
 const UsuarioSchema = new mongoose.Schema({
     codigo: {
         type: Number,
-        required: true,
+        unique: true,
+        sparse: true,
+        required: function() {
+            return this.tipo === 'cliente';
+        },
     },
     nome: {
         type: String,
@@ -41,13 +46,12 @@ const UsuarioSchema = new mongoose.Schema({
     senha: {
         type: String,
         required: true,
+        select: false,
     },
     tipo: {
         type: String,
         enum: ['cliente', 'funcionario'],
         required: true,
-        lowercase: true,
-        trim: true,
     },
     endereco: {
         type: enderecoSchema,
@@ -58,7 +62,6 @@ const UsuarioSchema = new mongoose.Schema({
     statusAbastecimento: {
         type: String,
         enum: ['ativo', 'inativo'],
-        default: 'inativo',
         required: function() {
             return this.tipo === 'cliente';
         },
@@ -68,6 +71,18 @@ const UsuarioSchema = new mongoose.Schema({
 },
 {timestamps: true}
 );
+
+UsuarioSchema.pre('save', async function() {
+    if (!this.isModified('senha')) {
+        return;
+    }
+    const salt = await bcryptjs.genSalt(10);
+    this.senha = await bcryptjs.hash(this.senha, salt);
+});
+
+UsuarioSchema.methods.compararSenha = async function(senha) {
+    return await bcryptjs.compare(senha, this.senha);
+}
 
 const Usuario = mongoose.model('Usuario', UsuarioSchema);
 

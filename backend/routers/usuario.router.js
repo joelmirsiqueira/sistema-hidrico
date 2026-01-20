@@ -4,6 +4,7 @@ import relatoDto from "../dtos/relato.dto.js";
 import validador from "../middlewares/validador.middleware.js";
 import { adicionarUsuario, listarFuncionarios, listarClientes, listarRelatos} from "../controllers/funcionario.controller.js";
 import { CriarRelato } from "../controllers/cliente.controller.js";
+import { verificarToken, verificarPermissao } from "../middlewares/auth.middleware.js";
 
 
 const usuarioRouters = Router();
@@ -18,12 +19,15 @@ const usuarioRouters = Router();
 */
 usuarioRouters.post('/usuario', validador(usuarioDto), adicionarUsuario);
 
-usuarioRouters.get('/funcionario', listarFuncionarios);
+// Rotas Protegidas (Exigem Token)
+usuarioRouters.get('/funcionario', verificarToken, verificarPermissao(['funcionario']), listarFuncionarios);
 
-usuarioRouters.get('/cliente', listarClientes);
+usuarioRouters.get('/cliente', verificarToken, verificarPermissao(['funcionario']), listarClientes);
 
-usuarioRouters.post('/relato', validador(relatoDto), CriarRelato);
+// Cliente precisa estar logado para criar relato
+usuarioRouters.post('/relato', verificarToken, validador(relatoDto), CriarRelato);
 
-usuarioRouters.get('/relatos', listarRelatos);
+// Apenas funcionários/admins podem ver a lista de relatos
+usuarioRouters.get('/relatos', verificarToken, verificarPermissao(['funcionario']), listarRelatos);
 
 export default usuarioRouters;
