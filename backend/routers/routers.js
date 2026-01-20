@@ -4,6 +4,8 @@ import documentacao from "./docs.router.js";
 import usuarioRouters from "./usuario.router.js";
 import mqttRouter from "./mqtt.routers.js";
 import login from "../controllers/auth.controller.js";
+import loginDto from "../dtos/login.dto.js";
+import validador from "../middlewares/validador.middleware.js";
 
 const router = Router();
 
@@ -89,7 +91,7 @@ router.get('/', (req, res) => {
  *       500:
  *         description: Erro interno do servidor
  */
-router.post('/login', login);
+router.post('/login', validador(loginDto), login);
 
 /**
  * @swagger
