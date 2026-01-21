@@ -16,7 +16,6 @@ async function mqttConnectAsync() {
         const consumoRegex = new RegExp(`^${process.env.MQTT_TOPIC_CLIENTE_CONSUMO}/\\d+$`);
 
         client.on('message', (topic, message) => {
-            console.log(`Mensagem recebida no tópico ${topic}: ${message.toString()}`); // log
             if (topic === process.env.MQTT_TOPIC_NIVEL) {
                 registrarNivel(message);
             } else if (consumoRegex.test(topic)) {

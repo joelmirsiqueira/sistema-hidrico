@@ -1,21 +1,22 @@
 import mongoose from "mongoose";
 
 const comportaSchema = new mongoose.Schema({
-    id: {
+    numero: {
         type: Number,
+        unique: true,
         required: true,
     },
     status: {
-        enum: ['aberto', 'fechado'],
+        type: String,
+        enum: ['on', 'off'],
         required: true,
     },
     data_hora: {
         type: Date,
-        default: Date.now,
+        default: Date.now(),
+        required: true,
     },
 });
-
-
 
 const Comporta = mongoose.model('Comporta', comportaSchema);
 
