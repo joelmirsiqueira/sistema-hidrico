@@ -58,11 +58,9 @@ async function mqttSubscribe(client) {
 async function registrarNivel(message) {
     const nivel = parseInt(message.toString());
     if (nivel < 0 || nivel > 10) {
-        console.error(`Nível inválido: ${nivel}`); // log
         return;
     }
     const capacidade = nivel * 10;
-    console.log(`capacidade do reservatório: ${capacidade}%`); // log
     const reservatorioAnterior = await Nivel.findOne().sort({ createdAt: -1 });
     if (reservatorioAnterior && reservatorioAnterior.capacidade === capacidade) {
         return;
@@ -78,20 +76,23 @@ async function registrarNivel(message) {
 
 async function registrarConsumo(topic, message) {
     const parts = topic.split('/');
-    const codigo = parseInt(parts[parts.length - 1]);
-    const cliente = await Usuario.findOne({ codigo: codigo });
+    const codigoCliente = parseInt(parts[parts.length - 1]);
+    const cliente = await Usuario.findOne({ codigo_cliente: codigoCliente });
     if (!cliente) {
-        console.error(`Cliente não encontrado com código ${codigo}`); // log
+        // disparar alerta
+        console.error(`Cliente não encontrado com código ${codigoCliente}`); // log
+        return;
+    }
+    if (cliente.statusAbastecimento === 'inativo') {
+        // disparar alerta
         return;
     }
     const consumo = parseFloat(message.toString());
-    console.log(`consumo do cliente ${cliente.nome}: ${consumo}`); // log
     try {
         await Consumo.create({
-            cliente: cliente._id,
-            codigo: codigo,
-            data: new Date(),
-            consumo: consumo.toFixed(2)
+            cliente_id: cliente._id,
+            codigo_cliente: codigoCliente,
+            consumo: consumo
         });
     } catch (error) {
         console.error('Erro ao criar consumo:', error);
