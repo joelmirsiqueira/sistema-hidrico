@@ -17,7 +17,7 @@ export async function CriarRelato(req, res) {
 }
 
 export async function obterConsumo(req, res) {
-    const clienteId = req.user.id;
+    const clienteId = req.params.id || req.user.id;
 
     try {
         const umMinutoAtras = new Date();

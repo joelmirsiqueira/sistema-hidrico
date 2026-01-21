@@ -7,11 +7,11 @@ const usuariobase = z.object({
     senha: z.string().min(6, "A senha deve ter pelo menos 6 caracteres")
 })
 
-const funcionarioDto = usuariobase.extend({
+export const funcionarioDto = usuariobase.extend({
     tipo: z.literal('funcionario'),
 })
 
-const clienteDto = usuariobase.extend({
+export const clienteDto = usuariobase.extend({
     tipo: z.literal('cliente'),
     codigo_cliente: z.number(),
     comporta: async (value) => {
@@ -28,7 +28,3 @@ const clienteDto = usuariobase.extend({
     }),
     status_cliente: z.enum(['ativo', 'inativo'], "O status deve ser ativo ou inativo")
 })
-
-const usuarioDto = z.discriminatedUnion('tipo', [funcionarioDto, clienteDto]);
-
-export default usuarioDto;
