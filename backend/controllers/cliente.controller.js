@@ -39,3 +39,29 @@ export async function obterConsumo(req, res) {
         res.status(500).json({ message: "Erro ao buscar dados de consumo.", error: error.message });
     }
 }
+
+export async function atualizarSenha(req, res) {
+    const clienteId = req.user.id;
+    const { senhaAtual, novaSenha } = req.body;
+
+    try {
+        const cliente = await Usuario.findById(clienteId);
+
+        if (!cliente) {
+            return res.status(404).json({ message: "Cliente não encontrado." });
+        }
+
+        const senhaCorreta = await cliente.compararSenha(senhaAtual);
+
+        if (!senhaCorreta) {
+            return res.status(401).json({ message: "Senha atual incorreta." });
+        }
+
+        cliente.senha = novaSenha;
+        await cliente.save();
+        
+        res.status(200).json({ message: "Senha atualizada com sucesso." });
+    } catch (error) {
+        res.status(500).json({ message: "Erro ao atualizar senha.", error: error.message });
+    }
+}
