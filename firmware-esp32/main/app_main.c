@@ -35,7 +35,7 @@ static const char *TAG = "app_main";
 #define CLIENTE_4 GPIO_NUM_23
 
 #define PULSOS_POR_LITRO 450.0
-#define MINIMO 18
+#define MINIMO 19
 
 static esp_mqtt_client_handle_t cliente_mqtt;
 static bool vazio = true;
@@ -285,7 +285,7 @@ static void ultrasonic_task(void *pvParameters)
 
             int64_t tempo_echo = esp_timer_get_time() - echo_start;
             soma += tempo_echo;
-            if (!vazio && tempo_echo > 1085)
+            if (!vazio && tempo_echo > 1142)
                 set_vazio();
 
             vTaskDelay(pdMS_TO_TICKS(200));
@@ -299,7 +299,7 @@ static void ultrasonic_task(void *pvParameters)
 
         int altura = MINIMO - distancia_cm;
         ESP_LOGI("ultrasonic", "%d", altura);
-        altura = altura < 0 ? 0 : altura;
+
         if (altura > 0 && vazio)
             vazio = false;
 
@@ -360,7 +360,7 @@ static void fluxometro_task(void *pvParameters)
                         char topic[128];
                         snprintf(topic, sizeof(topic), "%s/%s", TOPICO_CLIENTE_CONSUMO, tabela_clientes[i].id);
                         char payload[16];
-                        snprintf(payload, sizeof(payload), "%.1f", litros);
+                        snprintf(payload, sizeof(payload), "%.3f", litros);
                         esp_mqtt_client_publish(cliente_mqtt, topic, payload, 0, 0, 0);
                         
                         tabela_clientes[i].pulsos = 0;
