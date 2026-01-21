@@ -58,7 +58,7 @@ const UsuarioSchema = new mongoose.Schema({
             return this.tipo === 'cliente';
         }
     },
-    statusCliene: {
+    status_cliente: {
         type: String,
         enum: ['ativo', 'inativo'],
         required: function() {
