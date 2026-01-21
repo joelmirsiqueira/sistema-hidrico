@@ -1,9 +1,17 @@
 import mongoose from "mongoose";
 
 const RelatoSchema = new mongoose.Schema({
-    usuario: {
+    cliente_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Usuario',
+        required: true,
+    },
+    codigo_cliente: {
+        type: Number,
+        required: true,
+    },
+    data_hora: {
+        type: Date,
         required: true,
     },
     mensagem: {
@@ -12,13 +20,11 @@ const RelatoSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['lido', 'não lido'],
+        enum: ['não lido', 'lido', 'respondido', 'resolvido'],
         default: 'não lido',
         required: true,
     },
-},
-{timestamps: true}
-);
+});
 
 const Relato = mongoose.model('Relato', RelatoSchema);
 

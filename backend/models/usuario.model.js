@@ -5,8 +5,6 @@ const enderecoSchema = new mongoose.Schema({
     rua: {
         type: String,
         required: true,
-        trim: true,
-        lowercase: true,
     },
     numero: {
         type: Number,
@@ -15,13 +13,11 @@ const enderecoSchema = new mongoose.Schema({
     bairro: {
         type: String,
         required: true,
-        trim: true,
-        lowercase: true,
     }
 }, { _id: false });
 
 const UsuarioSchema = new mongoose.Schema({
-    codigo: {
+    codigo_cliente: {
         type: Number,
         unique: true,
         sparse: true,
@@ -32,16 +28,12 @@ const UsuarioSchema = new mongoose.Schema({
     nome: {
         type: String,
         required: true,
-        trim: true,
-        lowercase: true,
         minLength: 3,
     },
     email: {
         type: String,
         required: true,
         unique: true,
-        trim: true,
-        lowercase: true,
     },
     senha: {
         type: String,
@@ -65,8 +57,6 @@ const UsuarioSchema = new mongoose.Schema({
         required: function() {
             return this.tipo === 'cliente';
         },
-        lowercase: true,
-        trim: true,
     },
 },
 {timestamps: true}

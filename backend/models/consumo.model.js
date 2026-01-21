@@ -1,12 +1,16 @@
 import mongoose from "mongoose";
 
 const consumoSchema = new mongoose.Schema({
-    cliente: {
+    cliente_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Usuario',
         required: true,
     },
-    data: {
+    codigo_cliente: {
+        type: Number,
+        required: true,
+    },
+    data_hora: {
         type: Date,
         required: true,
     },

@@ -1,5 +1,5 @@
 import { connectAsync } from "mqtt";
-import LeituraNivel from "../models/leitura_nivel.model.js";
+import Nivel from "../models/nivel.model.js";
 import Consumo from "../models/consumo.model.js";
 import Usuario from "../models/usuario.model.js";
 
@@ -57,18 +57,18 @@ async function mqttSubscribe(client) {
 
 async function registrarNivel(message) {
     const nivel = parseInt(message.toString());
-    if (nivel < 0 || nivel > 100) {
+    if (nivel < 0 || nivel > 10) {
         console.error(`Nível inválido: ${nivel}`); // log
         return;
     }
     const capacidade = nivel * 10;
     console.log(`capacidade do reservatório: ${capacidade}%`); // log
-    const reservatorioAnterior = await LeituraNivel.findOne().sort({ createdAt: -1 });
+    const reservatorioAnterior = await Nivel.findOne().sort({ createdAt: -1 });
     if (reservatorioAnterior && reservatorioAnterior.capacidade === capacidade) {
         return;
     }
     try {
-        await LeituraNivel.create({
+        await Nivel.create({
         capacidade: capacidade
     });
     } catch (error) {
