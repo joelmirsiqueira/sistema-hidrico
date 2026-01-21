@@ -51,29 +51,30 @@ Este arquivo descreve os passos para desenvolver o sistema de gestão hídrica c
 - [x] **Inicialização:**
   - [x] Projeto Node.js, dependências (`express`, `mqtt`, `mongoose`, `dotenv`).
 
-- [ ] **Banco de Dados (MongoDB):**
+- [x] **Banco de Dados (MongoDB):**
   - [x] Conexão Mongoose.
-  - [ ] **Definição de Schemas (Models):**
-    - [ ] `LeituraNivel` (timestamp, valor).
-    - [ ] `LeituraConsumo` (timestamp, clienteId, volume).
+  - [x] **Definição de Schemas (Models):**
+    - [x] `Nivel` (dataHora, capacidade).
+    - [x] `Comporta` (id, dataHota, status).
     - [x] `Usuario` (login, senha, tipo: cliente/funcionario).
+    - [x] `Consumo` (clienteId, codigo, data, volume).
 
 - [ ] **Serviço MQTT:**
   - [x] Subscrever aos tópicos de sensores (`/sensor/+`).
-  - [ ] Processar e salvar dados de nível e consumo no banco.
+  - [x] Processar e salvar dados de nível e consumo no banco.
   - [ ] Implementar função para publicar comandos de controle de válvulas.
 
 - [ ] **API REST (Express):**
-  - [ ] **Autenticação:** Login e middleware de proteção de rotas.
+  - [x] **Autenticação:** Login e middleware de proteção de rotas.
   - [ ] **Rotas de Cliente:** Consultar consumo, status da unidade e cronograma.
   - [ ] **Rotas de Funcionário:**
     - [ ] Dashboard de nível do reservatório.
     - [ ] Controle de válvulas (acionar via MQTT).
     - [ ] Gestão de clientes (CRUD).
 
-- [ ] **Configuração:**
-  - [ ] Criar um arquivo `.env` para armazenar as variáveis de ambiente (URL do MongoDB, endereço do broker MQTT).
-  - [ ] Carregar as variáveis de ambiente na aplicação usando `dotenv`.
+- [x] **Configuração:**
+  - [x] Criar um arquivo `.env` para armazenar as variáveis de ambiente (URL do MongoDB, endereço do broker MQTT).
+  - [x] Carregar as variáveis de ambiente na aplicação usando `dotenv`.
 ## Fase 4: Desenvolvimento do Frontend (React)
 
 - [ ] **Inicialização:**
