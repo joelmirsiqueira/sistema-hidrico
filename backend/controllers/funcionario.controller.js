@@ -23,7 +23,7 @@ export async function adicionarUsuario(req, res) {
     }
 }
 
-export async function atualizarUsuario(req, res) {
+export async function atualizarCliente(req, res) {
     const { id } = req.params;
     const { nome, email, endereco, statusCliente } = req.body;
 
