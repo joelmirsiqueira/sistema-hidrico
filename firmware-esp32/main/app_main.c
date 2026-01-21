@@ -71,8 +71,8 @@ typedef struct
 } comando_comporta_entry_t;
 
 static const comando_comporta_entry_t tabela_comandos[] = {
-    {"1", 1},
-    {"0", 0}};
+    {"off", 1},
+    {"on", 0}};
 
 static void set_vazio(void)
 {
