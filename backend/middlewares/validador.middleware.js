@@ -1,7 +1,7 @@
-const validador = (schema) => (req, res, next) => {
+const validador = (schema) => async (req, res, next) => {
     try {
         // Valida o corpo da requisição e atualiza req.body com os dados tipados/limpos
-        req.body = schema.parse(req.body);
+        req.body = await schema.parse(req.body);
         next();
     } catch (error) {
         // Se for erro do Zod, formata e retorna
