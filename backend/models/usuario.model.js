@@ -17,14 +17,6 @@ const enderecoSchema = new mongoose.Schema({
 }, { _id: false });
 
 const UsuarioSchema = new mongoose.Schema({
-    codigo_cliente: {
-        type: Number,
-        unique: true,
-        sparse: true,
-        required: function() {
-            return this.tipo === 'cliente';
-        },
-    },
     nome: {
         type: String,
         required: true,
@@ -45,13 +37,28 @@ const UsuarioSchema = new mongoose.Schema({
         enum: ['cliente', 'funcionario'],
         required: true,
     },
+    codigo_cliente: {
+        type: Number,
+        unique: true,
+        sparse: true,
+        required: function() {
+            return this.tipo === 'cliente';
+        },
+    },
+    comporta: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comporta',
+        required: function() {
+            return this.tipo === 'cliente';
+        },
+    },
     endereco: {
         type: enderecoSchema,
         required: function() {
             return this.tipo === 'cliente';
         }
     },
-    statusAbastecimento: {
+    statusCliene: {
         type: String,
         enum: ['ativo', 'inativo'],
         required: function() {

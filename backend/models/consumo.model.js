@@ -6,10 +6,6 @@ const consumoSchema = new mongoose.Schema({
         ref: 'Usuario',
         required: true,
     },
-    codigo_cliente: {
-        type: Number,
-        required: true,
-    },
     data_hora: {
         type: Date,
         default: Date.now,

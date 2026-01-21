@@ -83,7 +83,7 @@ async function registrarConsumo(topic, message) {
         console.error(`Cliente não encontrado com código ${codigoCliente}`); // log
         return;
     }
-    if (cliente.statusAbastecimento === 'inativo') {
+    if (cliente.statusCliene === 'inativo') {
         // disparar alerta
         return;
     }
@@ -91,7 +91,6 @@ async function registrarConsumo(topic, message) {
     try {
         await Consumo.create({
             cliente_id: cliente._id,
-            codigo_cliente: codigoCliente,
             consumo: consumo
         });
     } catch (error) {
