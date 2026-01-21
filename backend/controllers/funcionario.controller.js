@@ -1,8 +1,7 @@
-
 import Usuario from '../models/usuario.model.js';
 import Relato from '../models/relato.model.js';
-
-
+import LeituraNivel from '../models/leitura_nivel.model.js';
+import Consumo from '../models/consumo.model.js';
 
 export async function adicionarUsuario(req, res) {
     const { nome, email, senha, tipo } = req.body;
@@ -62,6 +61,20 @@ export async function listarRelatos(req, res) {
         }
 
         res.status(200).json(relatos);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+export async function obterNivelReservatorio(req, res) {
+    try {
+        const nivelReservatorio = await LeituraNivel.findOne().sort({ createdAt: -1 });
+
+        if (!nivelReservatorio) {
+            return res.status(404).json({ error: 'Nenhum nível de reservatório encontrado' });
+        }
+
+        res.status(200).json(nivelReservatorio);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
