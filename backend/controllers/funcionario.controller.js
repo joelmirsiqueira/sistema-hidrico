@@ -28,13 +28,30 @@ export async function atualizarCliente(req, res) {
     const { nome, email, endereco, statusCliente } = req.body;
 
     try {
-        const usuario = await Usuario.findByIdAndUpdate(id, { nome, email, endereco, statusCliente }, { new: true });
+        const cliente = await Usuario.findByIdAndUpdate(id, { nome, email, endereco, statusCliente }, { new: true });
 
-        if (!usuario) {
+        if (!cliente) {
             return res.status(404).json({ error: 'Usuário não encontrado' });
         }
 
-        res.status(200).json(usuario);
+        res.status(200).json(cliente);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+export async function atualizarFuncionario(req, res) {
+    const { id } = req.params;
+    const { nome, email } = req.body;
+
+    try {
+        const funcionario = await Usuario.findByIdAndUpdate(id, { nome, email }, { new: true });
+
+        if (!funcionario) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        res.status(200).json(funcionario);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
