@@ -25,9 +25,9 @@ Este arquivo descreve os passos para desenvolver o sistema de gestão hídrica c
   - [x] Implementar a lógica para conectar o ESP32 a uma rede Wi-Fi.
   - [x] Armazenar as credenciais de forma segura (ex: via `menuconfig`).
 
-- [ ] **Sensores e Atuadores (Hardware):**
-  - [ ] **Fluxo:** Implementar leitura de pulsos para os sensores de fluxo (YF-S201).
-  - [x] **Nível:** Implementar leitura do sensor ultrassônico (HC-SR04 ou JSN-SR04T).
+- [x] **Sensores e Atuadores (Hardware):**
+  - [x] **Fluxo:** Implementar leitura de pulsos para os sensores de fluxo (YF-S201).
+  - [x] **Nível:** Implementar leitura do sensor ultrassônico (HC-SR04).
   - [x] **Válvulas:** Implementar controle de GPIO para acionamento dos relés das válvulas solenoide.
 
 - [ ] **Lógica e MQTT:**
@@ -60,7 +60,7 @@ Este arquivo descreve os passos para desenvolver o sistema de gestão hídrica c
     - [x] `Usuario` (login, senha, tipo: cliente/funcionario).
 
 - [ ] **Serviço MQTT:**
-  - [ ] Subscrever aos tópicos de sensores (`/sensor/+`).
+  - [x] Subscrever aos tópicos de sensores (`/sensor/+`).
   - [ ] Processar e salvar dados de nível e consumo no banco.
   - [ ] Implementar função para publicar comandos de controle de válvulas.
 
