@@ -11,7 +11,7 @@ const comportaSchema = new mongoose.Schema({
         enum: ['on', 'off'],
         required: true,
     },
-    data_hora: {
+    dataHora: {
         type: Date,
         default: Date.now(),
         required: true,

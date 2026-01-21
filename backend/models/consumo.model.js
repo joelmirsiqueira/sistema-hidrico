@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
 const consumoSchema = new mongoose.Schema({
-    cliente_id: {
+    cliente: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Usuario',
         required: true,
     },
-    data_hora: {
+    dataHora: {
         type: Date,
         default: Date.now,
     },

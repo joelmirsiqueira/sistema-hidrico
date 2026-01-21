@@ -37,7 +37,7 @@ const UsuarioSchema = new mongoose.Schema({
         enum: ['cliente', 'funcionario'],
         required: true,
     },
-    codigo_cliente: {
+    codigoCliente: {
         type: Number,
         unique: true,
         sparse: true,
@@ -58,7 +58,7 @@ const UsuarioSchema = new mongoose.Schema({
             return this.tipo === 'cliente';
         }
     },
-    status_cliente: {
+    status: {
         type: String,
         enum: ['ativo', 'inativo'],
         required: function() {

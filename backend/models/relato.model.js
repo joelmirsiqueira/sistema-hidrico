@@ -1,16 +1,16 @@
 import mongoose from "mongoose";
 
 const RelatoSchema = new mongoose.Schema({
-    cliente_id: {
+    cliente: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Usuario',
         required: true,
     },
-    codigo_cliente: {
+    codigoCliente: {
         type: Number,
         required: true,
     },
-    data_hora: {
+    dataHora: {
         type: Date,
         required: true,
     },

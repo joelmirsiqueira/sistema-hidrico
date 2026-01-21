@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 
 const nivelSchema = new mongoose.Schema({
-    data_hora: {
+    dataHora: {
         type: Date,
         default: Date.now,
     },

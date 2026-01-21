@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
 
 const abastecimentoSchema = new mongoose.Schema({
-    data: {
+    dataHora: {
         type: Date,
         required: true,
     },
-    bairro: {
-        type: String,
+    comporta: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comporta',
         required: true,
     },
     duracao: {
