@@ -28,9 +28,6 @@ const login = async function(req, res) {
             nome: usuario.nome,
             tipo: usuario.tipo,
         };
-        if (usuario.tipo === 'cliente') {
-            payload.codigo = usuario.codigo;
-        }
 
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: parseInt(process.env.JWT_EXPIRES_IN)
