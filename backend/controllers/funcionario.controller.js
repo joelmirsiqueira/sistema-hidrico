@@ -23,6 +23,42 @@ export async function adicionarUsuario(req, res) {
     }
 }
 
+export async function atualizarUsuario(req, res) {
+    const { id } = req.params;
+    const { nome, email, endereco, statusCliente } = req.body;
+
+    try {
+        const usuario = await Usuario.findByIdAndUpdate(id, { nome, email, endereco, statusCliente }, { new: true });
+
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        res.status(200).json(usuario);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+export async function resetarSenha(req, res) {
+    const { id } = req.params;
+
+    try {
+        const usuario = await Usuario.findById(id);
+
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        usuario.senha = usuario.email;
+        await usuario.save();
+
+        res.status(200).json({ message: 'Senha resetada com sucesso' });
+    } catch {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 export async function listarFuncionarios(req, res) {
     try {
         const funcionarios = await Usuario.find({ tipo: 'funcionario' })
