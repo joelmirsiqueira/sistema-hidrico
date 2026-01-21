@@ -56,7 +56,6 @@ Este arquivo descreve os passos para desenvolver o sistema de gestão hídrica c
   - [ ] **Definição de Schemas (Models):**
     - [ ] `LeituraNivel` (timestamp, valor).
     - [ ] `LeituraConsumo` (timestamp, clienteId, volume).
-    - [ ] `Cliente` (dados cadastrais, status, unidade).
     - [x] `Usuario` (login, senha, tipo: cliente/funcionario).
 
 - [ ] **Serviço MQTT:**
