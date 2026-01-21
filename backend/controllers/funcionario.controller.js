@@ -1,7 +1,6 @@
 import Usuario from '../models/usuario.model.js';
 import Relato from '../models/relato.model.js';
-import LeituraNivel from '../models/leitura_nivel.model.js';
-import Consumo from '../models/consumo.model.js';
+import Nivel from '../models/nivel.model.js';
 
 export async function adicionarUsuario(req, res) {
     const { nome, email, senha, tipo } = req.body;
@@ -68,7 +67,7 @@ export async function listarRelatos(req, res) {
 
 export async function obterNivelReservatorio(req, res) {
     try {
-        const nivelReservatorio = await LeituraNivel.findOne().sort({ createdAt: -1 });
+        const nivelReservatorio = await Nivel.findOne().sort({ createdAt: -1 });
 
         if (!nivelReservatorio) {
             return res.status(404).json({ error: 'Nenhum nível de reservatório encontrado' });
