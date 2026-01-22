@@ -1,0 +1,12 @@
+@font-face {
+  font-family: "Mona Sans Condensed";
+  src: url("../assets/fonts/MonaSans_Condensed-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+    font-family: "Mona Sans Expanded Bold";
+    src: url("../assets/fonts/MonaSans_Expanded-Bold.ttf");
+}
