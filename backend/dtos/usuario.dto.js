@@ -1,30 +1,43 @@
 import { z } from 'zod';
+import mongoose from 'mongoose';
 import Comporta from '../models/comporta.model.js';
 
-const usuariobase = z.object({
+export const criarFuncionarioDto = z.object({
     nome: z.string().min(3, "O nome deve ter pelo menos 3 caracteres"),
     email: z.email("O email deve ser válido"),
     senha: z.string().min(6, "A senha deve ter pelo menos 6 caracteres")
-})
+}).strict();
 
-export const funcionarioDto = usuariobase.extend({
-    tipo: z.literal('funcionario'),
-})
-
-export const clienteDto = usuariobase.extend({
-    tipo: z.literal('cliente'),
-    codigo_cliente: z.number(),
-    comporta: async (value) => {
-        const comporta = await Comporta.findById(value);
-        if (!comporta) {
-            throw new Error("Comporta não encontrado");
-        }
-        return comporta;
-    },
+export const criarClienteDto = criarFuncionarioDto.extend({
+    codigoCliente: z.number(),
+    comporta: z.string()
+        .regex(/^[0-9a-fA-F]{24}$/, "ID da comporta inválido")
+        .refine(async (value) => {
+            if (!mongoose.isValidObjectId(value)) return true;
+            return !!await Comporta.findById(value);
+        }, "Comporta não encontrada"),
     endereco: z.object({
         rua: z.string().min(3, "A rua deve ter pelo menos 3 caracteres"),
-        numero: z.number(),
+        numero: z.number("O número deve ser preenchido com um número válido").min(1, "O número deve ser maior que 0"),
         bairro: z.string().min(3, "O bairro deve ter pelo menos 3 caracteres"),
     }),
-    status_cliente: z.enum(['ativo', 'inativo'], "O status deve ser ativo ou inativo")
-})
+}).strict();
+
+export const atualizarFuncionarioDto = criarFuncionarioDto.omit({ senha: true }).partial();
+
+export const atualizarClienteDto = criarClienteDto.omit({ senha: true, codigoCliente: true,  }).partial();
+
+export const respostaUsuarioDto = z.object({
+    id: z.string(),
+    nome: z.string(),
+    email: z.string(),
+    tipo: z.string(),
+    codigoCliente: z.number().optional(),
+    comporta: z.any().transform((v) => v.toString()).optional(),
+    endereco: z.object({
+        rua: z.string(),
+        numero: z.number(),
+        bairro: z.string(),
+    }).optional(),
+    status: z.enum(['ativo', 'inativo']).optional(),
+});
