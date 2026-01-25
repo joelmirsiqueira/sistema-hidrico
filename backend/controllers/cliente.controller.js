@@ -1,15 +1,12 @@
 import Relato from "../models/relato.model.js";
 import Consumo from "../models/consumo.model.js";
+import { Usuario } from "../models/usuario.model.js";
 
 export async function CriarRelato(req, res) {
-    const { usuario, mensagem } = req.body;
-
-    if (!usuario || !mensagem) {
-        return res.status(400).json({ error: 'Cliente e mensagem são campos obrigatórios' });
-    }
+    const { user, mensagem } = req.body;
 
     try {
-        const relato = await Relato.create({ usuario, mensagem });
+        const relato = await Relato.create({ cliente: user.id, mensagem });
         res.status(201).json(relato);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -17,16 +14,16 @@ export async function CriarRelato(req, res) {
 }
 
 export async function obterConsumo(req, res) {
-    const clienteId = req.params.id || req.user.id;
+    const cliente = req.user.id;
 
     try {
         const umMinutoAtras = new Date();
         umMinutoAtras.setMinutes(umMinutoAtras.getMinutes() - 1)
 
-        const consumoLista = await Consumo.find({cliente_id: clienteId, data_hora: {$gte: umMinutoAtras}}).sort({ data_hora: -1 });
+        const consumoLista = await Consumo.find({cliente, dataHora: {$gte: umMinutoAtras}}).sort({ dataHora: -1 });
 
         if (!consumoLista || consumoLista.length === 0) {
-            return res.status(404).json({ message: "Nenhum registro de consumo encontrado para este usuário." });
+            return res.status(404).json({ message: "Nenhum registro de consumo encontrado para este cliente." });
         }
 
         const consumoAtual = consumoLista.reduce((acc, curr) => acc + curr.consumo, 0)

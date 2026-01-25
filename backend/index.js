@@ -16,7 +16,6 @@ app.use(express.urlencoded({ extended: true }));
 await dbConnectAsync();
 const clientMqtt = await mqttConnectAsync();
 
-// Middleware para disponibilizar o cliente MQTT em todas as requisições
 app.use((req, res, next) => {
     req.mqttClient = clientMqtt;
     next();

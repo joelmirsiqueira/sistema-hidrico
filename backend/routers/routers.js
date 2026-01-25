@@ -1,8 +1,6 @@
 import { Router } from "express";
 import swaggerUi from "swagger-ui-express";
 import documentacao from "./docs.router.js";
-import usuarioRouters from "./usuario.router.js";
-import mqttRouter from "./mqtt.routers.js";
 import login from "../controllers/auth.controller.js";
 import loginDto from "../dtos/login.dto.js";
 import validador from "../middlewares/validador.middleware.js";
@@ -25,21 +23,6 @@ const router = Router();
  *          description: Retorna a página de documentação da API.
  */
 router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(documentacao));
-
-/**
- * @swagger
- * /:
- *   get:
- *     summary: Mostra uma mensagem se o servidor estiver rodando
- *     description: Rota de teste
- *     tags: [Teste]
- *     responses:
- *       200:
- *          description: Retorna uma string.
- */
-router.get('/', (req, res) => {
-    res.send('Rota funcionando!');
-});
 
 /**
  * @swagger
@@ -99,23 +82,6 @@ router.post('/login', validador(loginDto), login);
 
 router.use('/cliente', verificarToken, verificarPermissao(['cliente']), clienteRouter)
 
-router.use('/funcionario', verificarToken, verificarPermissao(['funcionario']), funcionarioRouter)
-
-/**
- * @swagger
- * /usuario:
- *   post:
- *     description: Rota de gerenciamento de usuários.
- *     tags: [Usuario]
- */
-router.use('/', usuarioRouters)
-
-/**
- * @swagger
- * /mqtt:
- *   all:
- *     description: Rota de gerenciamento do MQTT.
- */
-router.use('/mqtt', mqttRouter)
+router.use('/funcionario', funcionarioRouter)
 
 export default router;
