@@ -10,6 +10,10 @@ const nivelSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    racionamento: {
+        type: Boolean,
+        required: true,
+    }
 });
 
 const Nivel = mongoose.model('Nivel', nivelSchema);

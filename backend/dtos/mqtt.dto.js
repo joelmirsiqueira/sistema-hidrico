@@ -24,4 +24,5 @@ export const respostaNivelDto = z.object({
     id: z.string(),
     dataHora: z.date(),
     capacidade: z.number(),
+    racionamento: z.boolean(),
 });
