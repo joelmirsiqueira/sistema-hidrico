@@ -6,10 +6,6 @@ const RelatoSchema = new mongoose.Schema({
         ref: 'Usuario',
         required: true,
     },
-    dataHora: {
-        type: Date,
-        default: Date.now,
-    },
     mensagem: {
         type: String,
         required: true,
@@ -20,7 +16,7 @@ const RelatoSchema = new mongoose.Schema({
         default: 'não lido',
         required: true,
     },
-});
+}, { timestamps: true });
 
 const Relato = mongoose.model('Relato', RelatoSchema);
 
