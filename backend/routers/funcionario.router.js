@@ -1,30 +1,39 @@
 import { Router } from "express";
 import validador from "../middlewares/validador.middleware.js";
-import { funcionarioDto, clienteDto } from "../dtos/usuario.dto.js";
-import { adicionarUsuario, listarFuncionarios, listarClientes, listarRelatos, atualizarCliente, atualizarFuncionario, resetarSenha, obterNivelReservatorio} from "../controllers/funcionario.controller.js";
-import {validador} from "../middlewares/auth.middleware.js";
+import { criarFuncionarioDto, criarClienteDto } from "../dtos/usuario.dto.js";
+import {
+    criarCliente,
+    criarFuncionario,
+    listarFuncionarios,
+    listarClientes,
+    listarRelatos,
+    atualizarCliente,
+    atualizarFuncionario,
+    resetarSenha,
+    obterNivelReservatorio,
+} from "../controllers/funcionario.controller.js";
 
 
 const funcionarioRouter = Router();
 
-funcionarioRouter.post('/funcionario', validador(funcionarioDto), adicionarUsuario);
+funcionarioRouter.post('/criar/funcionario', validador(criarFuncionarioDto), criarFuncionario);
 
-funcionarioRouter.post('/cliente', validador(clienteDto), adicionarUsuario)
+funcionarioRouter.post('/criar/cliente', validador(criarClienteDto), criarCliente)
 
-funcionarioRouter.get('/funcionarios', listarFuncionarios)
+funcionarioRouter.patch('/atualizar/cliente/:id', atualizarCliente);
 
-funcionarioRouter.get('/clientes', listarClientes);
+funcionarioRouter.patch('/atualizar/funcionario/:id', atualizarFuncionario);
 
-funcionarioRouter.get('/relatos', listarRelatos);
+funcionarioRouter.get('/resetar/senha/:id', resetarSenha);
 
-funcionarioRouter.get('/consumo/:id', obterConsumo);
+funcionarioRouter.get('/listar/funcionarios', listarFuncionarios)
 
-funcionarioRouter.patch('/cliente/:id', atualizarCliente);
+funcionarioRouter.get('/listar/clientes', listarClientes);
 
-funcionarioRouter.patch('funcionario/:id', atualizarFuncionario);
+funcionarioRouter.get('/listar/relatos', listarRelatos);
 
-funcionarioRouter.patch('/resetar-senha/:id', resetarSenha);
+funcionarioRouter.get('/consultar/nivel', obterNivelReservatorio)
 
-funcionarioRouter.get('/nivel', obterNivelReservatorio)
+// funcionarioRouter.get('/consultar/consumo/:id', obterConsumo);
 
 export default funcionarioRouter
