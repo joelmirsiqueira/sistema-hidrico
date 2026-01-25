@@ -1,22 +1,7 @@
 import mongoose from "mongoose";
 import bcryptjs from 'bcryptjs';
 
-const enderecoSchema = new mongoose.Schema({
-    rua: {
-        type: String,
-        required: true,
-    },
-    numero: {
-        type: Number,
-        required: true,
-    },
-    bairro: {
-        type: String,
-        required: true,
-    }
-}, { _id: false });
-
-const UsuarioSchema = new mongoose.Schema({
+const usuarioSchema = new mongoose.Schema({
     nome: {
         type: String,
         required: true,
@@ -32,44 +17,12 @@ const UsuarioSchema = new mongoose.Schema({
         required: true,
         select: false,
     },
-    tipo: {
-        type: String,
-        enum: ['cliente', 'funcionario'],
-        required: true,
-    },
-    codigoCliente: {
-        type: Number,
-        unique: true,
-        sparse: true,
-        required: function() {
-            return this.tipo === 'cliente';
-        },
-    },
-    comporta: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comporta',
-        required: function() {
-            return this.tipo === 'cliente';
-        },
-    },
-    endereco: {
-        type: enderecoSchema,
-        required: function() {
-            return this.tipo === 'cliente';
-        }
-    },
-    status: {
-        type: String,
-        enum: ['ativo', 'inativo'],
-        required: function() {
-            return this.tipo === 'cliente';
-        },
-    },
-},
-{timestamps: true}
-);
+}, {
+    discriminatorKey: 'tipo',
+    timestamps: true,
+});
 
-UsuarioSchema.pre('save', async function() {
+usuarioSchema.pre('save', async function() {
     if (!this.isModified('senha')) {
         return;
     }
@@ -77,10 +30,43 @@ UsuarioSchema.pre('save', async function() {
     this.senha = await bcryptjs.hash(this.senha, salt);
 });
 
-UsuarioSchema.methods.compararSenha = async function(senha) {
+usuarioSchema.methods.compararSenha = async function(senha) {
     return await bcryptjs.compare(senha, this.senha);
 }
 
-const Usuario = mongoose.model('Usuario', UsuarioSchema);
+export const Usuario = mongoose.model('Usuario', usuarioSchema);
 
-export default Usuario;
+export const Funcionario = Usuario.discriminator('funcionario', new mongoose.Schema({}));
+
+export const Cliente = Usuario.discriminator('cliente', new mongoose.Schema({
+    codigoCliente: {
+        type: Number,
+        unique: true,
+        sparse: true,
+    },
+    comporta: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comporta',
+        required: true,
+    },
+    endereco: {
+        rua: {
+            type: String,
+            required: true,
+        },
+        numero: {
+            type: Number,
+            required: true,
+        },
+        bairro: {
+            type: String,
+            required: true,
+        }
+    },
+    status: {
+        type: String,
+        enum: ['ativo', 'inativo'],
+        default: 'ativo',
+        required: true,
+    }
+}));

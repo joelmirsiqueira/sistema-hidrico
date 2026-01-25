@@ -16,6 +16,6 @@ const consumoSchema = new mongoose.Schema({
     },
 });
 
-const consumo = mongoose.model('Consumo', consumoSchema);
+const Consumo = mongoose.model('Consumo', consumoSchema);
 
-export default consumo;
+export default Consumo;

@@ -11,12 +11,7 @@ const comportaSchema = new mongoose.Schema({
         enum: ['on', 'off'],
         required: true,
     },
-    dataHora: {
-        type: Date,
-        default: Date.now(),
-        required: true,
-    },
-});
+}, { timestamps: true });
 
 const Comporta = mongoose.model('Comporta', comportaSchema);
 

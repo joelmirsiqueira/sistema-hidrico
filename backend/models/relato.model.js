@@ -6,13 +6,9 @@ const RelatoSchema = new mongoose.Schema({
         ref: 'Usuario',
         required: true,
     },
-    codigoCliente: {
-        type: Number,
-        required: true,
-    },
     dataHora: {
         type: Date,
-        required: true,
+        default: Date.now,
     },
     mensagem: {
         type: String,

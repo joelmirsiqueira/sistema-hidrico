@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
-// Schemas
-logComportaSchema = new mongoose.Schema({
+const logComportaSchema = new mongoose.Schema({
     comporta: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comporta',
@@ -18,7 +17,7 @@ logComportaSchema = new mongoose.Schema({
     },
 });
 
-logESP32Schema = new mongoose.Schema({
+const logESP32Schema = new mongoose.Schema({
     dataHora: {
         type: Date,
         default: Date.now,
@@ -28,8 +27,6 @@ logESP32Schema = new mongoose.Schema({
         required: true,
     }
 });
-
-// Models
 
 export const LogComporta = mongoose.model('LogComporta', logComportaSchema);
 
