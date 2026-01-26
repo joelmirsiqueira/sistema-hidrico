@@ -143,7 +143,7 @@ export async function listarRelatos(req, res) {
 
 export async function obterNivelReservatorio(req, res) {
     try {
-        const consulta = await Nivel.findOne().sort({ createdAt: -1 });
+        const consulta = await Nivel.findOne().sort({ dataHora: -1 });
 
         if (!consulta) {
             return res.status(404).json({ error: 'Nenhum nível de reservatório encontrado' });
@@ -161,14 +161,13 @@ export async function listarComportas(req, res) {
     try {
         const consulta = await Comporta.find();
 
-        if (!consulta) {
+        if (!consulta || consulta.length === 0) {
             return res.status(404).json({ error: 'Nenhuma comporta encontrada' });
         }
 
-        const comportas = consulta.map(comporta => respostaComportaDto.parse(comporta));
+        const comportas = consulta.map(comporta => respostaComportaDto.parse(comporta.toObject()));
 
-
-        res.status(200).json(consulta);
+        res.status(200).json(comportas);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

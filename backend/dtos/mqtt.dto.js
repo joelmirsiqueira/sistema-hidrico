@@ -14,7 +14,7 @@ export const acionarComportaDto = z.object({
 }).strict();
 
 export const respostaComportaDto = z.object({
-    id: z.string(),
+    _id: z.any().transform((v) => v.toString()),
     numero: z.number(),
     status: z.string(),
     createdAt: z.date(),

@@ -12,6 +12,7 @@ import {
     resetarSenha,
     obterNivelReservatorio,
     acionarComporta,
+    listarComportas,
 } from "../controllers/funcionario.controller.js";
 
 
@@ -37,6 +38,8 @@ funcionarioRouter.patch('/atualizar/cliente/:id', atualizarCliente);
 
 // Funcionalidades
 funcionarioRouter.get('/resetar/senha/:id', resetarSenha);
+
+funcionarioRouter.get('/listar/comportas', listarComportas)
 
 funcionarioRouter.get('/consultar/nivel', obterNivelReservatorio);
 
