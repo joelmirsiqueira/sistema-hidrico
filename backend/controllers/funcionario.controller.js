@@ -176,9 +176,7 @@ export async function listarComportas(req, res) {
 
 export async function acionarComporta(req, res) {
     const { mqttClient } = req;
-    const { numero } = req.params;
-    const { comando } = req.body;
-
+    const { numero, comando } = req.body;
     try {
         await mqttClient.publishAsync('sistema_hidrico/comporta/acionar/' + numero, comando);
         res.status(204);
