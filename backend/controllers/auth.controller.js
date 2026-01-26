@@ -52,11 +52,15 @@ export async function logout(req, res) {
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.blackList.push(token);
-
+        
         if (!decoded) {
             return res.status(401).json({ message: "Token inválido." });
         }
+        
+        req.blackList[token] = true;
+        setTimeout(() => {
+            delete req.blackList[token];
+        }, parseInt(decoded.exp * 1000 - Date.now()));
 
         res.status(200).json({ message: "Logout realizado com sucesso." });
     } catch (error) {
