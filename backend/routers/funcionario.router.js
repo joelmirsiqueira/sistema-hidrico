@@ -1,6 +1,6 @@
 import { Router } from "express";
 import validador from "../middlewares/validador.middleware.js";
-import { criarFuncionarioDto, criarClienteDto, atualizarFuncionarioDto, atualizarClienteDto } from "../dtos/usuario.dto.js";
+import { criarFuncionarioDto, criarClienteDto, atualizarFuncionarioDto, atualizarClienteDto, atualizarSenhaDto } from "../dtos/usuario.dto.js";
 import {
     criarCliente,
     criarFuncionario,
@@ -14,6 +14,7 @@ import {
     acionarComporta,
     listarComportas,
 } from "../controllers/funcionario.controller.js";
+import { atualizarSenha } from "../controllers/cliente.controller.js";
 
 
 const funcionarioRouter = Router();
@@ -25,7 +26,7 @@ funcionarioRouter.get('/listar/funcionarios', listarFuncionarios);
 
 funcionarioRouter.patch('/atualizar/funcionario/:id', validador(atualizarFuncionarioDto), atualizarFuncionario);
 
-// funcionarioRouter.put('/atualizar/senha', atualizarSenha); // TO DO
+funcionarioRouter.put('/atualizar/senha', validador(atualizarSenhaDto), atualizarSenha);
 
 // CRUD cliente
 funcionarioRouter.post('/criar/cliente', validador(criarClienteDto), criarCliente);
