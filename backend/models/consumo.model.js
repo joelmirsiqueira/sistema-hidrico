@@ -10,7 +10,7 @@ const consumoSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    consumo: {
+    quantidade: {
         type: Number,
         required: true,
     },
