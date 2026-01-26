@@ -58,15 +58,14 @@ async function mqttConnectAsync() {
 
 async function mqttSubscribe(client) {
     const listaTopicos = [topicos.nivel, topicos.consumoSubTopicos, topicos.comportaSubTopicos, topicos.log]
-    console.log(process.env.MQTT_TOPIC_NIVEL, topicos.nivel);
     listaTopicos.map(topico => {
         if (!topico) {
-            throw new Error(`Tópico \`${topico}\` não especificado`);
+            throw new Error(`Há tópicos indefinidos: ${listaTopicos}`);
         }
     })
     try {
         await Promise.all(listaTopicos.map(topico => client.subscribe(topico)));
-        console.log('Inscrito nos tópicos MQTT');
+        console.log('Inscrito nos tópicos MQTT'); // log
     } catch (error) {
         console.error('Erro ao se inscrever no tópico MQTT:', error);
         throw error;
@@ -83,9 +82,11 @@ async function registrarNivel(message) {
     if (reservatorioAnterior && reservatorioAnterior.capacidade === capacidade) {
         return;
     }
+    const racionamento = capacidade < 30 ? true : false;
     try {
         await Nivel.create({
-            capacidade: capacidade
+            capacidade,
+            racionamento,
         });
     } catch (error) {
         console.error('Erro ao criar leitura de nível:', error);
@@ -103,13 +104,14 @@ async function registrarConsumo(topic, message) {
     }
     if (cliente.status === 'inativo') {
         // disparar alerta
+        console.error(`Cliente com código ${codigoCliente} está inativo e consumindo água`); // log
         return;
     }
-    const consumo = parseFloat(message.toString());
+    const quantidade = parseFloat(message.toString());
     try {
         await Consumo.create({
             cliente: cliente._id,
-            consumo: consumo
+            quantidade
         });
     } catch (error) {
         console.error('Erro ao criar consumo:', error);
@@ -131,16 +133,18 @@ async function registrarComportaStatus(topic, message) {
             comporta: comporta._id,
             status: status
         });
+        await Comporta.updateOne({ numero }, { status });
     } catch (error) {
         console.error('Erro ao criar log de comporta:', error);
     }
 }
 
 async function registrarLog(message) {
+    const mensagem = message.toString();
     try {
         await LogESP32.create({
-            mensagem: message.toString()
-        })
+            mensagem
+        });
     } catch (error) {
         console.error('Erro ao criar log:', error);
     }
