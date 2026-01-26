@@ -26,8 +26,6 @@ app.use((req, res, next) => {
 
 app.use(router);
 
-app.use(express.static('static'));
-
 app.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`);
 });
