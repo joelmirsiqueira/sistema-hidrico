@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 await dbConnectAsync();
 const clientMqtt = await mqttConnectAsync();
 
-const blackList = [];
+const blackList = {};
 
 app.use((req, res, next) => {
     req.mqttClient = clientMqtt;
@@ -25,6 +25,8 @@ app.use((req, res, next) => {
 });
 
 app.use(router);
+
+app.use(express.static('static'));
 
 app.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`);
