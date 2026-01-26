@@ -59,18 +59,18 @@ Este arquivo descreve os passos para desenvolver o sistema de gestão hídrica c
     - [x] `Usuario` (login, senha, tipo: cliente/funcionario).
     - [x] `Consumo` (clienteId, codigo, data, volume).
 
-- [ ] **Serviço MQTT:**
+- [x] **Serviço MQTT:**
   - [x] Subscrever aos tópicos de sensores (`/sensor/+`).
   - [x] Processar e salvar dados de nível e consumo no banco.
-  - [ ] Implementar função para publicar comandos de controle de válvulas.
+  - [x] Implementar função para publicar comandos de controle de válvulas.
 
 - [ ] **API REST (Express):**
   - [x] **Autenticação:** Login e middleware de proteção de rotas.
   - [ ] **Rotas de Cliente:** Consultar consumo, status da unidade e cronograma.
-  - [ ] **Rotas de Funcionário:**
-    - [ ] Dashboard de nível do reservatório.
-    - [ ] Controle de válvulas (acionar via MQTT).
-    - [ ] Gestão de clientes (CRUD).
+  - [x] **Rotas de Funcionário:**
+    - [x] Dashboard de nível do reservatório.
+    - [x] Controle de comportas (acionar via MQTT).
+    - [x] Gestão de clientes (CRUD).
 
 - [x] **Configuração:**
   - [x] Criar um arquivo `.env` para armazenar as variáveis de ambiente (URL do MongoDB, endereço do broker MQTT).
@@ -78,7 +78,7 @@ Este arquivo descreve os passos para desenvolver o sistema de gestão hídrica c
 ## Fase 4: Desenvolvimento do Frontend (React)
 
 - [ ] **Inicialização:**
-  - [ ] Criar projeto React com **Vite**.
+  - [x] Criar projeto React com **Vite**.
   - [ ] Configurar rotas e bibliotecas (Axios, Chart.js, etc).
 
 - [ ] **Interfaces de Usuário:**
