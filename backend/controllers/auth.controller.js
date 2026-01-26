@@ -2,7 +2,7 @@ import { respostaUsuarioDto } from "../dtos/usuario.dto.js";
 import { Usuario } from "../models/usuario.model.js";
 import jwt from "jsonwebtoken";
 
-const login = async function(req, res) {
+export const login = async function(req, res) {
     try {
         const { email, senha } = req.body;
 
@@ -42,4 +42,26 @@ const login = async function(req, res) {
     }
 };
 
-export default login;
+export async function logout(req, res) {
+    try {
+        const authHeader = req.headers.authorization;
+        const token = authHeader && authHeader.split(' ')[1];
+
+        if (!token) {
+            return res.status(400).json({ message: "Token não fornecido." });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.blackList.push(token);
+
+        if (!decoded) {
+            return res.status(401).json({ message: "Token inválido." });
+        }
+
+        res.status(200).json({ message: "Logout realizado com sucesso." });
+    } catch (error) {
+        console.error("Erro no logout");
+        console.error("Erro no logout:", error);
+        res.status(500).json({ message: "Erro interno do servidor ao fazer logout." });
+    }
+}

@@ -1,8 +1,8 @@
 import { Router } from "express";
 import swaggerUi from "swagger-ui-express";
 import documentacao from "./docs.router.js";
-import login from "../controllers/auth.controller.js";
-import loginDto from "../dtos/login.dto.js";
+import { login, logout } from "../controllers/auth.controller.js";
+import { loginDto } from "../dtos/login.dto.js";
 import validador from "../middlewares/validador.middleware.js";
 import { verificarToken, verificarPermissao } from "../middlewares/auth.middleware.js";
 import clienteRouter from "./cliente.router.js";
@@ -78,10 +78,12 @@ router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(documentacao));
  *       500:
  *         description: Erro interno do servidor
  */
-router.post('/login', validador(loginDto), login);
+router.post('/auth/login', validador(loginDto), login);
+
+router.post('/auth/logout', verificarToken, logout);
 
 router.use('/cliente', verificarToken, verificarPermissao(['cliente']), clienteRouter)
 
-router.use('/funcionario', funcionarioRouter)
+router.use('/funcionario', verificarToken, verificarPermissao(['funcionario']), funcionarioRouter)
 
 export default router;

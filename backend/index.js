@@ -16,8 +16,11 @@ app.use(express.urlencoded({ extended: true }));
 await dbConnectAsync();
 const clientMqtt = await mqttConnectAsync();
 
+const blackList = [];
+
 app.use((req, res, next) => {
     req.mqttClient = clientMqtt;
+    req.blackList = blackList;
     next();
 });
 
