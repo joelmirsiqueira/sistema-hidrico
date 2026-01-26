@@ -11,11 +11,12 @@ export const criarFuncionarioDto = z.object({
 export const criarClienteDto = criarFuncionarioDto.extend({
     codigoCliente: z.number(),
     comporta: z.string()
-        .regex(/^[0-9a-fA-F]{24}$/, "ID da comporta inválido")
-        .refine(async (value) => {
-            if (!mongoose.isValidObjectId(value)) return true;
-            return !!await Comporta.findById(value);
-        }, "Comporta não encontrada"),
+        .refine((value) => mongoose.isValidObjectId(value), {
+            message: "ID da comporta inválido",
+        })
+        .refine(async (value) => !!await Comporta.findById(value), {
+            message: "Comporta não encontrada",
+        }),
     endereco: z.object({
         rua: z.string().min(3, "A rua deve ter pelo menos 3 caracteres"),
         numero: z.number("O número deve ser preenchido com um número válido").min(1, "O número deve ser maior que 0"),
