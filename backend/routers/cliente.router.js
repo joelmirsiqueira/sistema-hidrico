@@ -6,10 +6,10 @@ import { criarRelatoDto } from "../dtos/relato.dto.js";
 
 const clienteRouter = Router();
 
-clienteRouter.post('/relato', validador(criarRelatoDto), CriarRelato);
+clienteRouter.post('/criar/relato', validador(criarRelatoDto), CriarRelato);
 
-clienteRouter.get('/consumo', obterConsumo);
+clienteRouter.get('/obter/consumo', obterConsumo);
 
-clienteRouter.put('/senha', atualizarSenha);
+clienteRouter.put('/atualizar/senha', atualizarSenha);
 
 export default clienteRouter;
