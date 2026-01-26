@@ -13,6 +13,7 @@ import {
     obterNivelReservatorio,
     acionarComporta,
     listarComportas,
+    consultarCliente,
 } from "../controllers/funcionario.controller.js";
 import { atualizarSenha } from "../controllers/cliente.controller.js";
 
@@ -35,7 +36,7 @@ funcionarioRouter.get('/listar/clientes', listarClientes);
 
 funcionarioRouter.patch('/atualizar/cliente/:id', validador(atualizarClienteDto), atualizarCliente);
 
-// funcionarioRouter.patch('/consultar/cliente/:id', consultarCliente); // TO DO
+funcionarioRouter.get('/consultar/cliente/:id', consultarCliente);
 
 // Funcionalidades
 funcionarioRouter.get('/resetar/senha/:id', resetarSenha);
@@ -44,12 +45,8 @@ funcionarioRouter.get('/listar/comportas', listarComportas)
 
 funcionarioRouter.get('/consultar/nivel', obterNivelReservatorio);
 
-// funcionarioRouter.get('/listar/comportas', listarComportas); // TO DO
-
 funcionarioRouter.post('/acionar/comporta', acionarComporta);
 
 funcionarioRouter.get('/listar/relatos', listarRelatos);
-
-// funcionarioRouter.get('/consultar/consumo/:id', obterConsumo); // TO DO
 
 export default funcionarioRouter;

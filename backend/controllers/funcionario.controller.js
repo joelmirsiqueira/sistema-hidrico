@@ -5,6 +5,8 @@ import Nivel from '../models/nivel.model.js';
 import { respostaUsuarioDto } from '../dtos/usuario.dto.js';
 import { respostaRelatoDto } from '../dtos/relato.dto.js';
 import { respostaComportaDto, respostaNivelDto } from '../dtos/mqtt.dto.js';
+import Consumo from '../models/consumo.model.js';
+import { listarConsumos } from './cliente.controller.js';
 
 export async function criarFuncionario(req, res) {
     const { nome, email, senha } = req.body;
@@ -95,7 +97,7 @@ export async function resetarSenha(req, res) {
 
 export async function listarFuncionarios(req, res) {
     try {
-        const consulta = await Funcionario.find().sort({ nome: 1})
+        const consulta = await Funcionario.find().sort({ nome: 1 })
 
         if (!consulta) {
             return res.status(404).json({ error: 'Nenhum funcionário encontrado' });
@@ -183,3 +185,57 @@ export async function acionarComporta(req, res) {
         res.status(500).json({ error: e.message });
     }
 };
+
+export async function consultarCliente(req, res) {
+    const { id } = req.params;
+
+    try {
+        const consulta = await Cliente.findById(id);
+
+        if (!consulta) {
+            res.status(404).json({ error: 'Cliente não encontrado' });
+            return;
+        }
+
+        const comportaStatus = await Comporta.findById(consulta.comporta).select('status');
+        consulta.comportaStatus = comportaStatus.status || "Comporta não encontrada"
+
+        const tempoLimite = new Date();
+        tempoLimite.setMinutes(tempoLimite.getMinutes() - 12);
+
+        const registros = await Consumo.find({
+            cliente: consulta._id,
+            dataHora: { $gte: tempoLimite }
+        }).sort({ dataHora: 1 });
+
+        if (!registros || registros.length === 0) {
+            consulta.historicoConsumo = "Nenhum registro de consumo encontrado para este cliente.";
+        }
+
+        const listagemPorMinuto = registros.reduce((acc, curr) => {
+            const data = new Date(curr.dataHora);
+            const chaveMinuto = data.toLocaleDateString('pt-BR') + ' ' +
+                data.getHours().toString().padStart(2, '0') + ':' +
+                data.getMinutes().toString().padStart(2, '0');
+
+            if (!acc[chaveMinuto]) {
+                acc[chaveMinuto] = 0;
+            }
+
+            acc[chaveMinuto] += curr.quantidade;
+            return acc;
+        }, {});
+
+        consulta.historicoConsumo = Object.keys(listagemPorMinuto).map(minuto => ({
+            minuto: minuto,
+            totalConsumido: listagemPorMinuto[minuto]
+        }));
+
+        const cliente = respostaUsuarioDto.parse(consulta);
+
+        res.status(200).json(cliente);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+
+}

@@ -40,7 +40,9 @@ export const respostaUsuarioDto = z.object({
         numero: z.number(),
         bairro: z.string(),
     }).optional(),
-    status: z.enum(['ativo', 'inativo']).optional(),
+    status: z.string().optional(),
+    comportaStatus: z.string().optional(),
+    historicoConsumo: z.any().optional(),
 });
 
 export const atualizarSenhaDto = z.object({
