@@ -81,7 +81,7 @@ static void set_vazio(void)
         gpio_set_level(tabela_comportas[i].pin, 1);
         char topic[128];
         snprintf(topic, sizeof(topic), "%s/%s", TOPICO_COMPORTA_STATUS, tabela_comportas[i].id);
-        esp_mqtt_client_publish(cliente_mqtt, topic, "1", 0, 0, 0);
+        esp_mqtt_client_publish(cliente_mqtt, topic, "off", 0, 0, 0);
     }
     vazio = true;
 }
@@ -172,7 +172,7 @@ static void set_comporta(esp_mqtt_event_handle_t event)
 
     char topic[128];
     snprintf(topic, sizeof(topic), "%s/%s", TOPICO_COMPORTA_STATUS, comporta_id);
-    esp_mqtt_client_publish(cliente_mqtt, topic, comando_value ? "1" : "0", 0, 0, 0);
+    esp_mqtt_client_publish(cliente_mqtt, topic, comando_value ? "off" : "on", 0, 0, 0);
 }
 
 static void log_error_if_nonzero(const char *message, int error_code)
