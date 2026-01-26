@@ -78,7 +78,7 @@ async function registrarNivel(message) {
         return;
     }
     const capacidade = nivel * 10;
-    const reservatorioAnterior = await Nivel.findOne().sort({ createdAt: -1 });
+    const reservatorioAnterior = await Nivel.findOne().sort({ dataHora: -1 });
     if (reservatorioAnterior && reservatorioAnterior.capacidade === capacidade) {
         return;
     }
