@@ -44,7 +44,7 @@ export async function atualizarSenha(req, res) {
     const { senhaAtual, novaSenha } = req.body;
 
     try {
-        const cliente = await Usuario.findById(clienteId);
+        const cliente = await Usuario.findById(clienteId).select('+senha');
 
         if (!cliente) {
             return res.status(404).json({ message: "Cliente não encontrado." });
