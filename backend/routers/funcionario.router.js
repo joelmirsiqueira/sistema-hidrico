@@ -1,6 +1,6 @@
 import { Router } from "express";
 import validador from "../middlewares/validador.middleware.js";
-import { criarFuncionarioDto, criarClienteDto } from "../dtos/usuario.dto.js";
+import { criarFuncionarioDto, criarClienteDto, atualizarFuncionarioDto, atualizarClienteDto } from "../dtos/usuario.dto.js";
 import {
     criarCliente,
     criarFuncionario,
@@ -23,7 +23,7 @@ funcionarioRouter.post('/criar/funcionario', validador(criarFuncionarioDto), cri
 
 funcionarioRouter.get('/listar/funcionarios', listarFuncionarios);
 
-funcionarioRouter.patch('/atualizar/funcionario/:id', atualizarFuncionario);
+funcionarioRouter.patch('/atualizar/funcionario/:id', validador(atualizarFuncionarioDto), atualizarFuncionario);
 
 // funcionarioRouter.put('/atualizar/senha', atualizarSenha); // TO DO
 
@@ -32,7 +32,7 @@ funcionarioRouter.post('/criar/cliente', validador(criarClienteDto), criarClient
 
 funcionarioRouter.get('/listar/clientes', listarClientes);
 
-funcionarioRouter.patch('/atualizar/cliente/:id', atualizarCliente);
+funcionarioRouter.patch('/atualizar/cliente/:id', validador(atualizarClienteDto), atualizarCliente);
 
 // funcionarioRouter.patch('/consultar/cliente/:id', consultarCliente); // TO DO
 
