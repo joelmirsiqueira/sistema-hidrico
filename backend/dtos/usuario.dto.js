@@ -42,3 +42,8 @@ export const respostaUsuarioDto = z.object({
     }).optional(),
     status: z.enum(['ativo', 'inativo']).optional(),
 });
+
+export const atualizarSenhaDto = z.object({
+    senhaAtual: z.string().min(1, "A senha atual deve ser preenchida"),
+    novaSenha: z.string().min(6, "A nova senha deve ter pelo menos 6 caracteres"),
+})
