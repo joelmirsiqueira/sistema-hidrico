@@ -6,39 +6,47 @@ import RationingStatusCard from "../../components/dashboard/RationingStatusCard"
 import ConsumptionHistory from "../../components/dashboard/ConsumptionHistory"
 
 const consumptionHistoryData = [
-  { month: "Jan", value: 20 },
-  { month: "Fev", value: 8 },
-  { month: "Mar", value: 10 },
-  { month: "Mar", value: 15 },
-  { month: "Mar", value: 15 },
-  { month: "Mar", value: 15 },
-  { month: "Mar", value: 15 },
-  { month: "Mar", value: 15 },
-  { month: "Mar", value: 15 },
-  { month: "Mar", value: 15 },
-  { month: "Mar", value: 15 },
+  { month: "01/26", value: 30 },
+  { month: "12/25", value: 10 },
+  { month: "11/25", value: 10 },
+  { month: "10/25", value: 15 },
+  { month: "09/25", value: 15 },
+  { month: "08/25", value: 15 },
+  { month: "07/25", value: 15 },
+  { month: "06/25", value: 15 },
+  { month: "05/25", value: 15 },
+  { month: "04/25", value: 15 },
+  { month: "03/25", value: 15 },
 ];
 
 function ClientDashboard() {
   return (
+    {/* Dashboard */},
     <Box sx={{
       height: "100vh",
-      bgcolor: "#eef2f7",
       minHeight: "100vh",
-      backgroundColor: "#eef2f7",
+
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+
       overflowX: "hidden",
+
+      backgroundColor: "#eef2f7",
     }}>
+      {/* Header */}
       <Header />
 
+      {/* Content */}
       <Box container sx={{
-        display: "flex",
-        flexDirection: "row",
-        gap: "15px",
         width: "80vw",
-        margin: "auto",
-        marginTop: "15px"
+        marginTop: "15px",
+
+        display: "flex",
+        gap: "15px",
+        flexWrap: "wrap",
       }}>
-        {/* COLUNA ESQUERDA (3 cards) */}
+        {/* Left side (cards)*/}
         <Box
           sx={{
             display: "flex",
@@ -49,8 +57,7 @@ function ClientDashboard() {
         >
           <Box sx={{
             display: "flex",
-            flexDirection: "row",
-            gap: "15px"
+            gap: "15px",
           }}
           >
             <ConsumptionCard />
@@ -60,7 +67,6 @@ function ClientDashboard() {
 
           <Box sx={{
             display: "flex",
-            flexDirection: "row",
             gap: "15px",
           }}
           >
@@ -69,7 +75,7 @@ function ClientDashboard() {
           </Box>
         </Box>
 
-        {/* COLUNA DIREITA (Histórico) */}
+        {/* Right side (histórico) */}
         <Box
           sx={{
             flexGrow: 3,
@@ -79,11 +85,6 @@ function ClientDashboard() {
           <ConsumptionHistory data={consumptionHistoryData}/>
         </Box>
       </Box>
-
-
-
-
-
     </Box>
   );
 }
