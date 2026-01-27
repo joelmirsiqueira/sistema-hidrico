@@ -65,6 +65,13 @@ function Login() {
             width: "80%"
           }}
         />
+        <Input
+          placeholder="senha"
+          type="password"
+          sx={{
+            width: "80%"
+          }}
+        />
 
         <Button
         onClick={
