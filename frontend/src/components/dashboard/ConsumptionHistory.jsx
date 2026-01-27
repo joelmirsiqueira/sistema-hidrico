@@ -4,8 +4,8 @@ import { Box, Typography } from "@mui/joy"
 export default function ConsumptionHistory({ data }) {
   const maxValue = Math.max(...data.map(d => d.value));
   return (
-    <BaseCard sx={{ height: "100%"}}>
-      <Typography level="h4" mb={1}>Histórico de Consumo</Typography>
+    <BaseCard sx={{ background: "linear-gradient(90deg, #112859, #14223D)", height: "100%", flexDirection: "column"}}>
+      <Typography textColor="#fff" level="h4" mb={1}>Histórico de Consumo</Typography>
 
 
       {data.map(item => (
@@ -16,7 +16,7 @@ export default function ConsumptionHistory({ data }) {
             alignItems: "center"
           }}
         >
-          <Typography level="body-xs" sx={{
+          <Typography textColor="#fff" level="body-xs" sx={{
             width: "10%"
           }}
           >{item.month}</Typography>
@@ -27,6 +27,8 @@ export default function ConsumptionHistory({ data }) {
               display: "flex",
               justifyContent: "center",
               bgcolor: "#e0e7ff",
+              color: "#112859",
+              fontWeight: "bold",
               p: 0.5,
               borderRadius: 4,
             }}

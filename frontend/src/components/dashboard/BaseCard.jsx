@@ -1,13 +1,15 @@
-import { Card } from "@mui/joy";
+import { Card, Box } from "@mui/joy";
+import '../../styles/fonts.css'
 
 export default function BaseCard({ children, sx }) {
   return (
     <Card
       sx={{
         width: "100%",
-        height: "fit-content",
+        height: "100%",
+
         display: "flex",
-        flexDirection: "column",
+
         boxShadow: "lg",
         borderRadius: "md",
         ...sx,

@@ -1,6 +1,6 @@
 import { Box, Grid } from "@mui/joy";
 import Header from "../../components/layout/Header"
-import ConsumptionCard from "../../components/dashboard/ConsumptionCard"
+import ConsumptionStatusCard from "../../components/dashboard/ConsumptionStatusCard"
 import SupplyStatusCard from "../../components/dashboard/SupplyStatusCard"
 import RationingStatusCard from "../../components/dashboard/RationingStatusCard"
 import ConsumptionHistory from "../../components/dashboard/ConsumptionHistory"
@@ -60,19 +60,12 @@ function ClientDashboard() {
             gap: "15px",
           }}
           >
-            <ConsumptionCard />
+            <ConsumptionStatusCard />
             <SupplyStatusCard />
             <RationingStatusCard />
           </Box>
 
-          <Box sx={{
-            display: "flex",
-            gap: "15px",
-          }}
-          >
-            <Box flexGrow={2}><ConsumptionCard /></Box>
-            <Box flexGrow={1}><SupplyStatusCard /></Box>
-          </Box>
+          
         </Box>
 
         {/* Right side (histórico) */}
