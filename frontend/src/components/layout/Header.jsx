@@ -1,14 +1,15 @@
 import { Box, Typography, Avatar } from "@mui/joy";
 
 export default function Header() {
+  const textFontColor = "#fff"
   return (
     <Box sx={{
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
-      width: "100vw",
-      bgcolor: "#0b1020",
+      width: "100%",
+      bgcolor: "#111111",
     }}>
       <Box
         sx={{
@@ -19,9 +20,9 @@ export default function Header() {
           justifyContent: "space-between",
         }}
       >
-        <Typography fontWeight="lg"
+        <Typography level="h1"
           sx={{
-            color: "#fff"
+            color: `${textFontColor}`
           }}>
           AquaMonitor
         </Typography>
