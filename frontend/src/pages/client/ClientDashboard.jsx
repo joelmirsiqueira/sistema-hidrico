@@ -4,6 +4,7 @@ import ConsumptionStatusCard from "../../components/dashboard/ConsumptionStatusC
 import SupplyStatusCard from "../../components/dashboard/SupplyStatusCard"
 import RationingStatusCard from "../../components/dashboard/RationingStatusCard"
 import ConsumptionHistory from "../../components/dashboard/ConsumptionHistory"
+import ReportProblemCard from "../../components/dashboard/ReportProblemCard"
 
 const consumptionHistoryData = [
   { month: "01/26", value: 30 },
@@ -65,7 +66,13 @@ function ClientDashboard() {
             <RationingStatusCard />
           </Box>
 
-          
+          <Box sx={{
+            display: "flex",
+            gap: "15px",
+          }}
+          >
+            <Box flexGrow={1}><ReportProblemCard /></Box>
+          </Box>
         </Box>
 
         {/* Right side (histórico) */}
