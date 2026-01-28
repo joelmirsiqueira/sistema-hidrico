@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import cors from "cors";
 import express from 'express';
 import router from './routers/routers.js';
 import mqttConnectAsync from './mqtt/connect.mqtt.js';
@@ -24,6 +25,11 @@ app.use((req, res, next) => {
     req.blackList = blackList;
     next();
 });
+
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 
 app.use(router);
 
