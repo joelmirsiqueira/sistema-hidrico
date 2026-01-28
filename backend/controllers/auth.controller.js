@@ -28,12 +28,9 @@ export const login = async function(req, res) {
             expiresIn: parseInt(process.env.JWT_EXPIRES_IN)
         });
 
-        const usuario = respostaUsuarioDto.parse(consulta);
-
         res.status(200).json({
             message: "Login realizado com sucesso!",
             token,
-            usuario
         });
 
     } catch (error) {
