@@ -1,7 +1,9 @@
 import { Box, Typography, Avatar } from "@mui/joy";
+import { jwtDecode } from "jwt-decode";
 
 export default function Header() {
-  const textFontColor = "#fff"
+  const textFontColor = "#fff";
+  const authenticatedUser = jwtDecode(localStorage.getItem("token"));
   return (
     <Box sx={{
       display: "flex",
@@ -29,12 +31,21 @@ export default function Header() {
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Avatar />
-          <Typography level="body-sm"
-            sx={{
-              color: "#fff"
-            }}>
-            Daniel Ferreira
-          </Typography>
+          <Box sx={{display: "flex", flexDirection: "column"}}>
+            <Typography level="body-sm"
+              sx={{
+                color: "#fff",
+                fontWeight: "bold"
+              }}>
+              {authenticatedUser.nome}
+            </Typography>
+            <Typography level="body-sm"
+              sx={{
+                color: "#fff",
+              }}>
+              {authenticatedUser.tipo === "funcionario" ? "Funcionário" : "Cliente"}
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </Box>
