@@ -10,7 +10,7 @@ const clienteRouter = Router();
 
 clienteRouter.post('/criar/relato', validador(criarRelatoDto), CriarRelato);
 
-clienteRouter.get('/consultar/consumo', obterConsumo);
+clienteRouter.get('/consultar/consumo', obterConsumo); // redundante
 
 clienteRouter.put('/atualizar/senha', validador(atualizarSenhaDto), atualizarSenha);
 

@@ -26,13 +26,11 @@ export const criarClienteDto = criarFuncionarioDto.extend({
 
 export const atualizarFuncionarioDto = criarFuncionarioDto.omit({ senha: true }).partial();
 
-export const atualizarClienteDto = criarClienteDto.omit({ senha: true, codigoCliente: true,  }).partial();
+export const atualizarClienteDto = criarClienteDto.omit({ id: true, senha: true, codigoCliente: true, tipo: true }).partial();
 
 export const respostaUsuarioDto = z.object({
-    id: z.string(),
     nome: z.string(),
     email: z.string(),
-    tipo: z.string(),
     codigoCliente: z.number().optional(),
     comporta: z.any().transform((v) => v.toString()).optional(),
     endereco: z.object({
