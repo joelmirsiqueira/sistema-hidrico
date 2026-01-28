@@ -26,8 +26,8 @@ export default function WaterGatesCard({ data = [] }) {
 
   return (
     <BaseCard sx={{ height: "100%" }}>
-      <Typography level="h4" mb={1}>
-        Estado de Comportas
+      <Typography textAlign={"center"} level="h4" mb={1}>
+        Estado das Comportas
       </Typography>
 
       {gates.map(item => (
