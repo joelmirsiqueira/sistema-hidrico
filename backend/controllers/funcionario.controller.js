@@ -178,11 +178,12 @@ export async function listarComportas(req, res) {
 export async function acionarComporta(req, res) {
     const { mqttClient } = req;
     const { numero, comando } = req.body;
+    const topicoComportaAcionar = process.env.MQTT_TOPIC_COMPORTA_ACIONAR
     try {
-        await mqttClient.publishAsync('sistema_hidrico/comporta/acionar/' + numero, comando);
-        res.status(204);
+        await mqttClient.publishAsync(`${topicoComportaAcionar}/${numero}`, comando);
+        return res.status(204).send();
     } catch (e) {
-        res.status(500).json({ error: e.message });
+        return res.status(500).json({ error: e.message });
     }
 };
 
