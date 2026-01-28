@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 export default function ReservoirLevelCard() {
     const [nivel, setNivel] = useState(null);
+    const [racionamento, setRacionamento] = useState("");
     const [erro, setErro] = useState("");
 
     useEffect(() => {
@@ -13,10 +14,10 @@ export default function ReservoirLevelCard() {
 
                 const response = await fetch(
                     "http://localhost:3000/funcionario/consultar/nivel", {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
                 );
 
                 const data = await response.json();
@@ -25,6 +26,7 @@ export default function ReservoirLevelCard() {
                 }
 
                 setNivel(data.capacidade);
+                setRacionamento(data.racionamento);
             } catch (error) {
                 setErro(error.message);
             }
@@ -34,9 +36,15 @@ export default function ReservoirLevelCard() {
     }, []);
 
     return (
-        <BaseCard sx={{ bgcolor: "#ffc934", color: "#fff" }}>
-            <Typography level="body-sm">Nível do Reservatório</Typography>
-            <Typography level="h2">{nivel*1000}L ou {nivel}m³</Typography>
+        <BaseCard sx={{
+            background:
+                `${racionamento === true ? "linear-gradient(90deg, #ff8a65, #ff7043)" : "linear-gradient(90deg, #35DEA4, #0EA672)"}`,
+            color: "#fff"
+        }}
+        >
+            <Typography textColor={"#fff"} level="body-sm">Nível do Reservatório</Typography>
+            <Typography textColor={"#fff"} level="h2">{nivel * 1000}L ou {nivel}m³</Typography>
+            <Typography textColor={"#fff"} level="body-sm">Racionamento: {racionamento === true ? "Ativo" : "Inativo"}</Typography>
         </BaseCard>
     )
 }
