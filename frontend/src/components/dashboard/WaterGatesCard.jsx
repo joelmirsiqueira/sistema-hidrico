@@ -10,23 +10,51 @@ export default function WaterGatesCard({ data = [] }) {
     }))
   );
 
-  const handleToggle = (id) => {
+  async function acionarComporta(numero, comando) {
+    try {
+      await fetch("http://localhost:3000/funcionario/acionar/comporta", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          numero,
+          comando,
+        }),
+      });
+    } catch (error) {
+      console.error("Erro ao acionar comporta:", error);
+    }
+  }
+
+  const handleToggle = async (id) => {
+    const gateAtual = gates.find(g => g.id === id);
+    if (!gateAtual) return;
+
+    const novoEstado = !gateAtual.isOpen;
+    const comando = novoEstado ? "on" : "off";
+
+    // Atualiza a UI
     setGates(prev =>
       prev.map(gate =>
         gate.id === id
           ? {
               ...gate,
-              isOpen: !gate.isOpen,
-              value: !gate.isOpen ? "Aberto" : "Fechado"
+              isOpen: novoEstado,
+              value: novoEstado ? "Aberto" : "Fechado",
             }
           : gate
       )
     );
+
+    // Envia pro backend
+    await acionarComporta(id, comando);
   };
 
   return (
     <BaseCard sx={{ height: "100%" }}>
-      <Typography textAlign={"center"} level="h4" mb={1}>
+      <Typography textAlign="center" level="h4" mb={1}>
         Estado das Comportas
       </Typography>
 
@@ -37,7 +65,8 @@ export default function WaterGatesCard({ data = [] }) {
             display: "flex",
             gap: 2,
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
+            mb: 1,
           }}
         >
           <Typography level="body-xs" sx={{ width: "5%" }}>
@@ -52,7 +81,7 @@ export default function WaterGatesCard({ data = [] }) {
               bgcolor: item.isOpen ? "#136C13" : "#555E68",
               p: 0.5,
               borderRadius: 4,
-              color: "white"
+              color: "white",
             }}
           >
             {item.value}
