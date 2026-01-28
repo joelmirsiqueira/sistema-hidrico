@@ -4,7 +4,8 @@ import router from './routers/routers.js';
 import mqttConnectAsync from './mqtt/connect.mqtt.js';
 import dbConnectAsync from './database/connect.database.js';
 
-dotenv.config({ path: `./.env.${process.env.NODE_ENV}` });
+// dotenv.config({ path: `./.env.${process.env.NODE_ENV}` });
+dotenv.config();
 
 const port = process.env.PORT;
 
