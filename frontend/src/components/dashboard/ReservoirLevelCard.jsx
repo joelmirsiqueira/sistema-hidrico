@@ -1,5 +1,5 @@
 import BaseCard from "./BaseCard"
-import { Typography } from "@mui/joy"
+import { Box, Typography } from "@mui/joy"
 import { useEffect, useState } from "react";
 
 export default function ReservoirLevelCard() {
@@ -36,15 +36,38 @@ export default function ReservoirLevelCard() {
     }, []);
 
     return (
-        <BaseCard sx={{
+
+
+        <BaseCard  sx={{ flexDirection: "row",
             background:
                 `${racionamento === true ? "linear-gradient(90deg, #ff8a65, #ff7043)" : "linear-gradient(90deg, #35DEA4, #0EA672)"}`,
-            color: "#fff"
+            color: "#fff",
         }}
         >
-            <Typography textColor={"#fff"} level="body-sm">Nível do Reservatório</Typography>
-            <Typography textColor={"#fff"} level="h2">{nivel * 1000}L ou {nivel}m³</Typography>
-            <Typography textColor={"#fff"} level="body-sm">Racionamento: {racionamento === true ? "Ativo" : "Inativo"}</Typography>
+            <Box sx={{
+                width: "7%",
+                height: "100%",
+
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+
+                objectFit: "contain"
+            }}>
+                <img width={"100%"} src="/public/imgs/icons/Reservatorio.png" alt="" />
+            </Box>
+
+            <Box sx={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                gap: "20px"
+            }}>
+                <Typography textColor={"#fff"} level="body-sm">Nível do Reservatório</Typography>
+                <Typography textColor={"#fff"} level="h2">{nivel * 1000}L ou {nivel}m³</Typography>
+                <Typography textColor={"#fff"} level="body-sm">Racionamento: {racionamento === true ? "Ativo" : "Inativo"}</Typography>
+            </Box>
         </BaseCard>
     )
 }
