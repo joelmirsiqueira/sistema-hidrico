@@ -31,6 +31,7 @@ export const atualizarClienteDto = criarClienteDto.omit({ id: true, senha: true,
 export const respostaUsuarioDto = z.object({
     nome: z.string(),
     email: z.string(),
+    tipo: z.string(),
     codigoCliente: z.number().optional(),
     comporta: z.any().transform((v) => v.toString()).optional(),
     endereco: z.object({
