@@ -9,6 +9,7 @@ import {
 } from "@mui/joy";
 import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
 function Login() {
   const navigate = useNavigate();
@@ -36,10 +37,10 @@ function Login() {
 
       // Salvar token
       localStorage.setItem("token", data.token);
-      localStorage.setItem("usuario", JSON.stringify(data.usuario));
 
+      const authenticatedUser = jwtDecode(localStorage.getItem("token"));
       // Redirecionar conforme tipo
-      if (data.usuario.tipo === "funcionario") {
+      if (authenticatedUser.tipo === "funcionario") {
         navigate("/employee");
       } else {
         navigate("/client");
