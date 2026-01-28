@@ -8,9 +8,46 @@ import {
   Typography
 } from "@mui/joy";
 import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
 
 function Login() {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState("");
+
+  async function handleLogin() {
+    setErro("");
+
+    try {
+      const response = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, senha }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Erro ao realizar login");
+      }
+
+      // Salvar token
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("usuario", JSON.stringify(data.usuario));
+
+      // Redirecionar conforme tipo
+      if (data.usuario.tipo === "funcionario") {
+        navigate("/employee");
+      } else {
+        navigate("/client");
+      }
+    } catch (error) {
+      setErro(error.message);
+    }
+  }
 
   return (
     <Box
@@ -61,6 +98,8 @@ function Login() {
         <Input
           placeholder="exemplo@email.com"
           type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           sx={{
             width: "80%"
           }}
@@ -68,15 +107,20 @@ function Login() {
         <Input
           placeholder="senha"
           type="password"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
           sx={{
             width: "80%"
           }}
         />
 
+        {erro && (
+          <Typography color="danger" level="body-sm">
+            {erro}
+          </Typography>
+        )}
         <Button
-        onClick={
-          () => navigate("/client")
-        }
+          onClick={handleLogin}
           sx={{
             backgroundColor: "#41B576",
             transition: "background-color 0.3s",
