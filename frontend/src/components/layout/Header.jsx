@@ -1,7 +1,10 @@
 import { Box, Typography, Avatar } from "@mui/joy";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
+  const navigate = useNavigate();
+
   const textFontColor = "#fff";
   const authenticatedUser = jwtDecode(localStorage.getItem("token"));
   return (
@@ -29,9 +32,9 @@ export default function Header() {
           AquaMonitor
         </Typography>
 
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        <Box sx={{ width: "fit-content", display: "flex", alignItems: "center", justifyContent: "end", gap: 2, }}>
           <Avatar />
-          <Box sx={{display: "flex", flexDirection: "column"}}>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Typography level="body-sm"
               sx={{
                 color: "#fff",
@@ -46,6 +49,12 @@ export default function Header() {
               {authenticatedUser.tipo === "funcionario" ? "Funcionário" : "Cliente"}
             </Typography>
           </Box>
+          <button onClick={function () {
+            localStorage.removeItem("token");
+            navigate("/")
+          }} id="logoutButton" style={{ background: "none", width: "5%", border: "none", cursor: "pointer" }}>
+            <img style={{ width: "100%" }} src="/public/imgs/icons/Sair da conta.png" alt="Sair" />
+          </button>
         </Box>
       </Box>
     </Box>

@@ -1,7 +1,5 @@
 import { Box, Grid } from "@mui/joy";
 import Header from "../../components/layout/Header"
-import SupplyStatusCard from "../../components/dashboard/SupplyStatusCard"
-import RationingStatusCard from "../../components/dashboard/RationingStatusCard"
 import ReservoirLevelCard from "../../components/dashboard/ReservoirLevelCard";
 import WaterGatesCard from "../../components/dashboard/WaterGatesCard";
 
