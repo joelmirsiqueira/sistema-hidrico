@@ -161,17 +161,18 @@ static void set_comporta(esp_mqtt_event_handle_t event)
         return;
     }
 
+    char topic[128];
+    snprintf(topic, sizeof(topic), "%s/%s", TOPICO_COMPORTA_STATUS, comporta_id);
+    
     if (vazio && comando_value == 0)
     {
         ESP_LOGE(TAG, "Reservatório vazio");
+        esp_mqtt_client_publish(cliente_mqtt, topic, "off", 0, 0, 0);
         esp_mqtt_client_publish(cliente_mqtt, TOPICO_ERROR_LOG, "Reservatório vazio", 0, 0, 0);
         return;
     }
-
+    
     gpio_set_level(comporta_gpio_num, comando_value);
-
-    char topic[128];
-    snprintf(topic, sizeof(topic), "%s/%s", TOPICO_COMPORTA_STATUS, comporta_id);
     esp_mqtt_client_publish(cliente_mqtt, topic, comando_value ? "off" : "on", 0, 0, 0);
 }
 
