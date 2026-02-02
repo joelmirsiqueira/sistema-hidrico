@@ -178,14 +178,37 @@ export async function listarComportas(req, res) {
 export async function acionarComporta(req, res) {
     const { mqttClient } = req;
     const { numero, comando } = req.body;
-    const topicoComportaAcionar = process.env.MQTT_TOPIC_COMPORTA_ACIONAR
+    const topicoComportaAcionar = `${process.env.MQTT_TOPIC_COMPORTA_ACIONAR}/${numero}`;
+    const topicoRespostaStatus = `${process.env.MQTT_TOPIC_COMPORTA_STATUS}/${numero}`;
+
     try {
-        await mqttClient.publishAsync(`${topicoComportaAcionar}/${numero}`, comando);
-        return res.status(204).send();
-    } catch (e) {
-        return res.status(500).json({ error: e.message });
+        const responsePromise = new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+                mqttClient.removeListener('message', messageHandler);
+                reject(new Error('Tempo de resposta esgotado do dispositivo.'));
+            }, 10000);
+
+            const messageHandler = (topic, message) => {
+                if (topic === topicoRespostaStatus) {
+                    clearTimeout(timeout);
+                    mqttClient.removeListener('message', messageHandler);
+                    resolve(message.toString());
+                }
+            };
+
+            mqttClient.on('message', messageHandler);
+        });
+
+        await mqttClient.publishAsync(topicoComportaAcionar, comando);
+        const comportaStatus = await responsePromise;
+        return res.status(200).json({ message: "Comando executado.", status: comportaStatus });
+    } catch (error) {
+        if (error.message.includes('Tempo de resposta esgotado')) {
+            return res.status(408).json({ error: error.message }); // Request Timeout
+        }
+        return res.status(500).json({ error: "Erro interno ao acionar a comporta.", details: error.message });
     }
-};
+}
 
 export async function consultarCliente(req, res) {
     const { id } = req.params;
