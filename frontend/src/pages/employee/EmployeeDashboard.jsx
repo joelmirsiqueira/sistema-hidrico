@@ -1,71 +1,75 @@
-import { Box, Grid } from "@mui/joy";
-import Header from "../../components/layout/Header"
+import { Box } from "@mui/joy";
+import Header from "../../components/layout/Header";
 import ReservoirLevelCard from "../../components/dashboard/ReservoirLevelCard";
 import WaterGatesCard from "../../components/dashboard/WaterGatesCard";
+import { useEffect, useState } from "react";
 
-const waterGates = [
-    { id: 1, value: "Aberto" },
-    { id: 2, value: "Fechado" },
-];
+export default function EmployeeDashboard() {
+  const [waterGates, setWaterGates] = useState([]);
 
-function EmployeeDashboard() {
-    return (
-        {/* Dashboard */ },
-        <Box sx={{
-            height: "100vh",
-            minHeight: "100vh",
+  useEffect(() => {
+    async function fetchWaterGates() {
+      try {
+        const token = localStorage.getItem("token");
 
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+        const response = await fetch(
+          "http://localhost:3000/funcionario/listar/comportas",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-            overflowX: "hidden",
+        const data = await response.json();
 
-            backgroundColor: "#eef2f7",
-        }}>
-            {/* Header */}
-            <Header />
+        if (!response.ok) {
+          throw new Error(data.error || "Erro ao listar comportas");
+        }
 
-            {/* Content */}
-            <Box container sx={{
-                width: "80vw",
-                marginTop: "15px",
+        setWaterGates(
+          data.map((gate) => ({
+            id: gate.numero,
+            value: gate.status === "on" ? "Aberto" : "Fechado",
+          }))
+        );
+      } catch (error) {
+        console.error("Erro ao listar comportas:", error);
+      }
+    }
 
-                display: "flex",
-                gap: "15px",
-                flexWrap: "wrap",
-            }}>
-                {/* Left side (cards)*/}
-                <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        flexGrow: 9,
-                        rowGap: "15px"
-                    }}
-                >
-                    <Box sx={{
-                        height: "100%",
-                        display: "flex",
-                        gap: "15px",
-                    }}
-                    >
-                        <ReservoirLevelCard />
-                    </Box>
-                </Box>
+    fetchWaterGates();
+  }, []);
 
-                {/* Right side (Comportas) */}
-                <Box
-                    sx={{
-                        flexGrow: 3,
-                        overflowY: "auto"
-                    }}
-                >
-                    <WaterGatesCard data={waterGates} />
-                </Box>
-            </Box>
+  return (
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        backgroundColor: "#eef2f7",
+      }}
+    >
+      <Header />
+
+      <Box
+        sx={{
+          width: "80vw",
+          marginTop: "15px",
+          display: "flex",
+          gap: "15px",
+          flexWrap: "wrap",
+        }}
+      >
+        <Box sx={{ flexGrow: 9 }}>
+          <ReservoirLevelCard />
         </Box>
-    );
-}
 
-export default EmployeeDashboard;
+        <Box sx={{ flexGrow: 3 }}>
+          <WaterGatesCard data={waterGates} />
+        </Box>
+      </Box>
+    </Box>
+  );
+}

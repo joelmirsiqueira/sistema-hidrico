@@ -1,15 +1,7 @@
-import * as React from 'react';
 import BaseCard from "./BaseCard";
 import { Box, Typography, Switch } from "@mui/joy";
 
 export default function WaterGatesCard({ data = [] }) {
-  const [gates, setGates] = React.useState(() =>
-    data.map(item => ({
-      ...item,
-      isOpen: item.value === "Aberto"
-    }))
-  );
-
   async function acionarComporta(numero, comando) {
     try {
       await fetch("http://localhost:3000/funcionario/acionar/comporta", {
@@ -18,37 +10,15 @@ export default function WaterGatesCard({ data = [] }) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({
-          numero,
-          comando,
-        }),
+        body: JSON.stringify({ numero, comando }),
       });
     } catch (error) {
       console.error("Erro ao acionar comporta:", error);
     }
   }
 
-  const handleToggle = async (id) => {
-    const gateAtual = gates.find(g => g.id === id);
-    if (!gateAtual) return;
-
-    const novoEstado = !gateAtual.isOpen;
-    const comando = novoEstado ? "on" : "off";
-
-    // Atualiza a UI
-    setGates(prev =>
-      prev.map(gate =>
-        gate.id === id
-          ? {
-              ...gate,
-              isOpen: novoEstado,
-              value: novoEstado ? "Aberto" : "Fechado",
-            }
-          : gate
-      )
-    );
-
-    // Envia pro backend
+  const handleToggle = async (id, isOpen) => {
+    const comando = isOpen ? "on" : "off";
     await acionarComporta(id, comando);
   };
 
@@ -58,43 +28,47 @@ export default function WaterGatesCard({ data = [] }) {
         Estado das Comportas
       </Typography>
 
-      {gates.map(item => (
-        <Box
-          key={item.id}
-          sx={{
-            display: "flex",
-            gap: 2,
-            alignItems: "center",
-            justifyContent: "center",
-            mb: 1,
-          }}
-        >
-          <Typography level="body-xs" sx={{ width: "5%" }}>
-            {item.id}
-          </Typography>
+      {data.map(item => {
+        const isOpen = item.value === "Aberto";
 
+        return (
           <Box
+            key={item.id}
             sx={{
-              width: "80%",
               display: "flex",
+              gap: 2,
+              alignItems: "center",
               justifyContent: "center",
-              bgcolor: item.isOpen ? "#136C13" : "#555E68",
-              p: 0.5,
-              borderRadius: 4,
-              color: "white",
+              mb: 1,
             }}
           >
-            {item.value}
-          </Box>
+            <Typography level="body-xs" sx={{ width: "5%" }}>
+              {item.id}
+            </Typography>
 
-          <Switch
-            checked={item.isOpen}
-            color={item.isOpen ? "success" : "neutral"}
-            variant={item.isOpen ? "solid" : "outlined"}
-            onChange={() => handleToggle(item.id)}
-          />
-        </Box>
-      ))}
+            <Box
+              sx={{
+                width: "80%",
+                display: "flex",
+                justifyContent: "center",
+                bgcolor: isOpen ? "#136C13" : "#555E68",
+                p: 0.5,
+                borderRadius: 4,
+                color: "white",
+              }}
+            >
+              {item.value}
+            </Box>
+
+            <Switch
+              checked={isOpen}
+              color={isOpen ? "success" : "neutral"}
+              variant={isOpen ? "solid" : "outlined"}
+              onChange={(e) => handleToggle(item.id, e.target.checked)}
+            />
+          </Box>
+        );
+      })}
     </BaseCard>
   );
 }
