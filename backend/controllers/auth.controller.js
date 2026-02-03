@@ -22,6 +22,7 @@ export const login = async function(req, res) {
             id: consulta._id,
             nome: consulta.nome,
             tipo: consulta.tipo,
+            ...(consulta.tipo === "cliente" && {comporta: consulta.comporta})
         };
 
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
