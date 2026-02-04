@@ -6,20 +6,6 @@ import RationingStatusCard from "../../components/dashboard/RationingStatusCard"
 import ConsumptionHistory from "../../components/dashboard/ConsumptionHistory"
 import ReportProblemCard from "../../components/dashboard/ReportProblemCard"
 
-const consumptionHistoryData = [
-  { month: "01/26", value: 30 },
-  { month: "12/25", value: 10 },
-  { month: "11/25", value: 10 },
-  { month: "10/25", value: 15 },
-  { month: "09/25", value: 15 },
-  { month: "08/25", value: 15 },
-  { month: "07/25", value: 15 },
-  { month: "06/25", value: 15 },
-  { month: "05/25", value: 15 },
-  { month: "04/25", value: 15 },
-  { month: "03/25", value: 15 },
-];
-
 function ClientDashboard() {
   return (
     {/* Dashboard */},
@@ -52,7 +38,7 @@ function ClientDashboard() {
           sx={{
             display: "flex",
             flexDirection: "column",
-            flexGrow: 9,
+            flexGrow: 8,
             rowGap: "15px"
           }}
         >
@@ -78,11 +64,11 @@ function ClientDashboard() {
         {/* Right side (histórico) */}
         <Box
           sx={{
-            flexGrow: 3,
+            flexGrow: 4,
             overflowY: "auto"
           }}
         >
-          <ConsumptionHistory data={consumptionHistoryData}/>
+          <ConsumptionHistory />
         </Box>
       </Box>
     </Box>
