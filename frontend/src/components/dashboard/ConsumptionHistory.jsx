@@ -24,6 +24,7 @@ export default function ConsumptionHistory({ data }) {
           <Box
             sx={{
               width: `${(item.value / maxValue) * 100}%`,
+              maxWidth: "80%",
               display: "flex",
               justifyContent: "center",
               bgcolor: "#e0e7ff",

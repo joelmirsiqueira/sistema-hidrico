@@ -39,7 +39,7 @@ function ClientDashboard() {
       <Header />
 
       {/* Content */}
-      <Box container sx={{
+      <Box sx={{
         width: "80vw",
         marginTop: "15px",
 
