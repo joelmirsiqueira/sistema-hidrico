@@ -3,10 +3,10 @@ import { jwtDecode } from "jwt-decode";
 
 export default function PrivateRoute({ children, allowedRoles }) {
     const token = localStorage.getItem("token");
-    const authenticatedUser = jwtDecode(token);
+    const authenticatedUser = token && jwtDecode(token);
 
     // Não está logado
-    if (!token || !authenticatedUser) {
+    if (!authenticatedUser) {
         return <Navigate to="/" replace />;
     }
 
