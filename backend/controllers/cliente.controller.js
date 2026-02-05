@@ -3,9 +3,12 @@ import Consumo from "../models/consumo.model.js";
 import { Usuario } from "../models/usuario.model.js";
 import Comporta from "../models/comporta.model.js";
 import Nivel from "../models/nivel.model.js";
+import jwt from "jsonwebtoken";
 
 export async function CriarRelato(req, res) {
-    const { user, mensagem } = req.body;
+    const { mensagem } = req.body;
+    const [, token ] = (req.headers.authorization).split(" ");  
+    const user = jwt.verify(token, process.env.JWT_SECRET);
 
     try {
         const relato = await Relato.create({ cliente: user.id, mensagem });
@@ -17,7 +20,7 @@ export async function CriarRelato(req, res) {
 
 export async function obterConsumo(req, res) {
     const cliente = req.user.id;
-
+    
     try {
         const umMinutoAtras = new Date();
         umMinutoAtras.setMinutes(umMinutoAtras.getMinutes() - 1)
@@ -58,7 +61,7 @@ export async function atualizarSenha(req, res) {
 
         cliente.senha = novaSenha;
         await cliente.save();
-        
+
         res.status(200).json({ message: "Senha atualizada com sucesso." });
     } catch (error) {
         res.status(500).json({ message: "Erro ao atualizar senha.", error: error.message });
@@ -67,7 +70,7 @@ export async function atualizarSenha(req, res) {
 
 export async function listarConsumos(req, res) {
     const clienteId = req.user.id;
-
+    
     try {
         const tempoLimite = new Date();
         tempoLimite.setMinutes(tempoLimite.getMinutes() - 12);
@@ -77,20 +80,20 @@ export async function listarConsumos(req, res) {
             dataHora: { $gte: tempoLimite }
         }).sort({ dataHora: 1 });
 
-        if(!registros || registros.length === 0) {
+        if (!registros || registros.length === 0) {
             return res.status(404).json({ message: "Nenhum registro de consumo encontrado para este cliente." });
         }
 
         const listagemPorMinuto = registros.reduce((acc, curr) => {
             const data = new Date(curr.dataHora);
-            const chaveMinuto = data.toLocaleDateString('pt-BR') + ' ' + 
-                               data.getHours().toString().padStart(2, '0') + ':' + 
-                               data.getMinutes().toString().padStart(2, '0');
+            const chaveMinuto = data.toLocaleDateString('pt-BR') + ' ' +
+                data.getHours().toString().padStart(2, '0') + ':' +
+                data.getMinutes().toString().padStart(2, '0');
 
             if (!acc[chaveMinuto]) {
                 acc[chaveMinuto] = 0;
             }
-            
+
             acc[chaveMinuto] += curr.quantidade;
             return acc;
         }, {});
@@ -108,7 +111,7 @@ export async function listarConsumos(req, res) {
 
 export async function obterComportaStatus(req, res) {
     const id = req.params.id;
-    
+
     try {
         const consulta = await Comporta.findById(id);
 
@@ -124,7 +127,7 @@ export async function obterComportaStatus(req, res) {
 
 export async function obterStatusRacionamento(req, res) {
     try {
-        const consulta = await Nivel.findOne({}, {racionamento: 1, _id: 0}).sort({ dataHora: -1 });
+        const consulta = await Nivel.findOne({}, { racionamento: 1, _id: 0 }).sort({ dataHora: -1 });
 
         if (!consulta) {
             return res.status(404).json({ error: 'Nenhum dado de racionamento encontrado' });
