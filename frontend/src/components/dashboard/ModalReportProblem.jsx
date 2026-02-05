@@ -1,7 +1,13 @@
 import { Modal, ModalDialog, Typography, Textarea, Box, Button } from "@mui/joy";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function ModalReportProblem({ open, onClose, onSubmit }) {
+export default function ModalReportProblem({ open, onClose, onSubmit, loading, erro, sucesso }) {
+  useEffect(() => {
+    if (sucesso) {
+      setMensagem("");
+    }
+  }, [sucesso]);
+
   const [mensagem, setMensagem] = useState("");
   return (
     <Modal open={open} onClose={onClose}>
@@ -24,17 +30,28 @@ export default function ModalReportProblem({ open, onClose, onSubmit }) {
           }}
         />
 
-        <Box sx={{ display: "flex", gap: 2, justifyContent: "flex-end", mt: 2 }}>
+        <Box sx={{ display: "flex", gap: 2, justifyContent: "flex-end", alignItems: "center", mt: 2 }}>
+          {erro && (
+            <Typography color="danger" level="body-sm">
+              {erro}
+            </Typography>
+          )}
+
+          {sucesso && (
+            <Typography color="success" level="body-sm">
+              Relato enviado com sucesso!
+            </Typography>
+          )}
+
           <Button variant="plain" color="neutral" onClick={onClose}>
             Cancelar
           </Button>
+
           <Button
             color="danger"
-            onClick={() => {
-              onSubmit(mensagem)
-              setMensagem("");
-            }
-            }
+            loading={loading}
+            disabled={loading}
+            onClick={() => onSubmit(mensagem)}
           >
             Enviar
           </Button>

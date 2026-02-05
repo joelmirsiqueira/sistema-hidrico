@@ -2,14 +2,19 @@ import BaseCard from "./BaseCard";
 import { Box, Typography, Button } from "@mui/joy";
 import { useState } from "react";
 import ModalReportProblem from "./ModalReportProblem";
-import { jwtDecode } from "jwt-decode";
 
 export default function ReportProblemCard() {
     const [open, setOpen] = useState(false);
     const [erro, setErro] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [sucesso, setSucesso] = useState(false);
 
     async function criarRelato(mensagem) {
         try {
+            setLoading(true);
+            setErro("");
+            setSucesso(false);
+
             const token = localStorage.getItem("token");
 
             const response = await fetch("http://localhost:3000/cliente/criar/relato", {
@@ -26,8 +31,12 @@ export default function ReportProblemCard() {
             if (!response.ok) {
                 throw new Error(data.error || "Erro ao realizar login");
             }
+
+            setSucesso(true);
         } catch (error) {
             setErro(error.message);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -61,8 +70,10 @@ export default function ReportProblemCard() {
                 onClose={() => setOpen(false)}
                 onSubmit={(mensagem) => {
                     criarRelato(mensagem);
-                    setOpen(false);
                 }}
+                loading={loading}
+                erro={erro}
+                sucesso={sucesso}
             />
         </>
     );
