@@ -1,8 +1,10 @@
 import { Box } from "@mui/joy";
+import { useEffect, useState } from "react";
+
 import Header from "../../components/layout/Header";
 import ReservoirLevelCard from "../../components/dashboard/ReservoirLevelCard";
 import WaterGatesCard from "../../components/dashboard/WaterGatesCard";
-import { useEffect, useState } from "react";
+import ListClientsCard from "../../components/dashboard/ListClientsCard";
 
 export default function EmployeeDashboard() {
     const [waterGates, setWaterGates] = useState([]);
@@ -77,7 +79,7 @@ export default function EmployeeDashboard() {
     return (
         <Box
             sx={{
-                minHeight: "100vh",
+                height: "100vh",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -93,14 +95,16 @@ export default function EmployeeDashboard() {
                     display: "flex",
                     gap: "15px",
                     flexWrap: "wrap",
+                    flexDirection: "column"
                 }}
             >
-                <Box sx={{ flexGrow: 9 }}>
-                    <ReservoirLevelCard />
+                <Box sx={{width: "100%", display: "flex", gap: "15px"}}>
+                    <Box flex={3}><ReservoirLevelCard /></Box>
+                    <Box flex={2}><WaterGatesCard data={waterGates} onToggle={toggleGate}/></Box>                   
                 </Box>
 
-                <Box sx={{ flexGrow: 3 }}>
-                    <WaterGatesCard data={waterGates} onToggle={toggleGate}/>
+                <Box sx={{display: "flex", flex: 1, gap: "15px"}}>
+                    <ListClientsCard />
                 </Box>
             </Box>
         </Box>
