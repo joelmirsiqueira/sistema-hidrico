@@ -38,9 +38,9 @@ export default function ConsumptionCard() {
         obterConsumoMensalAtual();
     }, []);
 
-    useEffect(() => {
-        console.log(ConsumoMensalAtual);
-    }, [ConsumoMensalAtual]);
+    // useEffect(() => {
+    //     console.log(ConsumoMensalAtual);
+    // }, [ConsumoMensalAtual]);
 
     return (
         <BaseCard sx={{

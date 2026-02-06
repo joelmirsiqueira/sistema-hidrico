@@ -41,18 +41,18 @@ export default function ConsumptionHistory() {
     ...historicoDeConsumo.map(item => item.totalConsumido)
   ));
 
-  useEffect(() => {
-    if (!historicoDeConsumo || historicoDeConsumo.length === 0) return;
+  // useEffect(() => {
+  //   if (!historicoDeConsumo || historicoDeConsumo.length === 0) return;
 
-    const maxValue = Math.max(...historicoDeConsumo.map(i => i.totalConsumido));
+  //   const maxValue = Math.max(...historicoDeConsumo.map(i => i.totalConsumido));
 
-    historicoDeConsumo.forEach(i => {
-      console.log((i.totalConsumido / maxValue) * 100);
-    });
-  }, [historicoDeConsumo]);
+  //   historicoDeConsumo.forEach(i => {
+  //     console.log((i.totalConsumido / maxValue) * 100);
+  //   });
+  // }, [historicoDeConsumo]);
   return (
     <BaseCard sx={{ background: "linear-gradient(90deg, #112859, #14223D)", height: "100%", flexDirection: "column" }}>
-      <Typography textColor="#fff" level="h4" mb={1}>Histórico de Consumo</Typography>
+      <Typography alignSelf={"center"} textColor="#fff" level="h4" mb={1}>Histórico de Consumo</Typography>
 
 
       {historicoDeConsumo.map(item => (
