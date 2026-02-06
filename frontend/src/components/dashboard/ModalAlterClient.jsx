@@ -47,6 +47,23 @@ export default function ModalAlterClient({ open, onClose, cliente }) {
     }
 
     async function handleSubmit() {
+
+        const camposObrigatorios = [
+            "nome",
+            "email",
+            "comporta",
+            "rua",
+            "numero",
+            "bairro",
+        ];
+
+        for (const campo of camposObrigatorios) {
+            if (!form[campo] || form[campo].toString().trim() === "") {
+                setErro("Preencha todos os campos obrigatórios.");
+                return;
+            }
+        }
+
         try {
             setErro("");
             setSucesso("");
@@ -77,7 +94,7 @@ export default function ModalAlterClient({ open, onClose, cliente }) {
             );
 
             const data = await response.json();
-            
+
             if (!response.ok) {
                 throw new Error(data.error || "Erro ao atualizar cliente");
             }
@@ -113,7 +130,7 @@ export default function ModalAlterClient({ open, onClose, cliente }) {
                 }}>
                     <FormControl>
                         <FormLabel>Nome do cliente</FormLabel>
-                        <Input
+                        <Input required
                             name="nome"
                             value={form.nome}
                             onChange={handleChange}
@@ -123,7 +140,7 @@ export default function ModalAlterClient({ open, onClose, cliente }) {
 
                     <FormControl>
                         <FormLabel>E-mail</FormLabel>
-                        <Input
+                        <Input required
                             name="email"
                             value={form.email}
                             onChange={handleChange}
@@ -133,7 +150,7 @@ export default function ModalAlterClient({ open, onClose, cliente }) {
 
                     <FormControl>
                         <FormLabel>Comporta</FormLabel>
-                        <Input
+                        <Input required
                             disabled
                             name="comporta"
                             value={form.comporta}
@@ -144,7 +161,7 @@ export default function ModalAlterClient({ open, onClose, cliente }) {
 
                     <FormControl>
                         <FormLabel>Rua</FormLabel>
-                        <Input
+                        <Input required
                             name="rua"
                             value={form.rua}
                             onChange={handleChange}
@@ -153,7 +170,7 @@ export default function ModalAlterClient({ open, onClose, cliente }) {
 
                     <FormControl>
                         <FormLabel>Número</FormLabel>
-                        <Input
+                        <Input required
                             name="numero"
                             value={form.numero}
                             onChange={handleChange}
@@ -162,7 +179,7 @@ export default function ModalAlterClient({ open, onClose, cliente }) {
 
                     <FormControl>
                         <FormLabel>Bairro</FormLabel>
-                        <Input
+                        <Input required
                             name="bairro"
                             value={form.bairro}
                             onChange={handleChange}
