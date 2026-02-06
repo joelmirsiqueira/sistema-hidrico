@@ -55,10 +55,10 @@ export default function ModalClients({ open, onClose, onSubmit }) {
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
-
+                    gap: "10px"
                 }}>
 
-                    <List sx={{ width: "100%", bgcolor: "background.surface" }}>
+                    <List sx={{ width: "100%", bgcolor: "background.surface", maxHeight: "70vh", overflowY: "scroll"}}>
                         {listaDeClientes.map((cliente, index) => (
                             <Box key={cliente.codigoCliente}>
                                 <ListItem
@@ -117,7 +117,7 @@ export default function ModalClients({ open, onClose, onSubmit }) {
 
                     <Tooltip arrow title={"Criar novo usuário"} variant="outlined">
                         <Box onClick={() => {
-                            setClienteSelecionado(cliente)
+                            setClienteSelecionado(null)
                             setOpenCreateClient(true)
                         }
                         } sx={{
@@ -128,6 +128,15 @@ export default function ModalClients({ open, onClose, onSubmit }) {
                         </Box>
                     </Tooltip>
                 </Box>
+
+                <ModalCreateClients
+                    open={openCreateClient}
+                    onClose={() => setOpenCreateClient(false)}
+                    onSuccess={() => {
+                        setOpenCreateClient(false);
+                        listarClientes();
+                    }}
+                />
 
                 <ModalAlterClient
                     cliente={clienteSelecionado}
