@@ -82,13 +82,13 @@ Este arquivo descreve os passos para desenvolver o sistema de gestão hídrica c
   - [ ] Configurar rotas e bibliotecas (Axios, Chart.js, etc).
 
 - [ ] **Interfaces de Usuário:**
-  - [ ] **Login:** Tela de acesso para clientes e funcionários.
-  - [ ] **Portal do Cliente:**
-    - [ ] Exibir consumo atual e histórico.
-    - [ ] Exibir status do abastecimento e alertas.
+  - [x] **Login:** Tela de acesso para clientes e funcionários.
+  - [x] **Portal do Cliente:**
+    - [x] Exibir consumo atual e histórico.
+    - [x] Exibir status do abastecimento e alertas.
   - [ ] **Portal do Funcionário:**
-    - [ ] **Monitoramento:** Gráfico em tempo real do nível do reservatório.
-    - [ ] **Operacional:** Botões para abrir/fechar comportas (válvulas).
+    - [x] **Monitoramento:** Gráfico em tempo real do nível do reservatório.
+    - [x] **Operacional:** Botões para abrir/fechar comportas (válvulas).
     - [ ] **Administrativo:** Lista de clientes e alteração de status.
 
 ## Fase 5: Integração e Finalização
