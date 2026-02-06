@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { Modal, ModalDialog, Typography, Box, Button, Divider, Input, FormControl, FormLabel } from "@mui/joy";
+import { Modal, ModalDialog, Typography, Box, Button, Divider, Input, FormControl, FormLabel, Alert } from "@mui/joy";
 
 export default function ModalAlterClient({ open, onClose, cliente }) {
     const [erro, setErro] = useState("");
+    const [sucesso, setSucesso] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const [form, setForm] = useState({
         nome: "",
@@ -13,7 +15,6 @@ export default function ModalAlterClient({ open, onClose, cliente }) {
         bairro: "",
     });
 
-    // Preenche o form quando editar
     useEffect(() => {
         if (!cliente) {
             setForm({
@@ -45,20 +46,48 @@ export default function ModalAlterClient({ open, onClose, cliente }) {
         }));
     }
 
-    function handleSubmit() {
-        const payload = {
-            nome: form.nome,
-            email: form.email,
-            comporta: form.comporta,
-            endereco: {
-                rua: form.rua,
-                numero: form.numero,
-                bairro: form.bairro,
-            },
-        };
+    async function handleSubmit() {
+        try {
+            setErro("");
+            setSucesso("");
+            setLoading(true);
 
-        console.log("Payload:", payload);
-        onClose();
+            const token = localStorage.getItem("token");
+
+            const payload = {
+                nome: form.nome,
+                email: form.email,
+                endereco: {
+                    rua: form.rua,
+                    numero: form.numero,
+                    bairro: form.bairro,
+                },
+            };
+
+            const response = await fetch(
+                `http://localhost:3000/funcionario/atualizar/cliente/${cliente._id}`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify(payload),
+                }
+            );
+
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.error || "Erro ao atualizar cliente");
+            }
+
+            setSucesso("Cliente atualizado com sucesso!");
+        } catch (error) {
+            setErro(error.message);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -105,6 +134,7 @@ export default function ModalAlterClient({ open, onClose, cliente }) {
                     <FormControl>
                         <FormLabel>Comporta</FormLabel>
                         <Input
+                            disabled
                             name="comporta"
                             value={form.comporta}
                             onChange={handleChange}
@@ -141,6 +171,18 @@ export default function ModalAlterClient({ open, onClose, cliente }) {
                 </Box>
 
                 <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 3 }}>
+                    {erro && (
+                        <Alert color="danger" variant="soft">
+                            {erro}
+                        </Alert>
+                    )}
+
+                    {sucesso && (
+                        <Alert color="success" variant="soft">
+                            {sucesso}
+                        </Alert>
+                    )}
+
                     <Button variant="plain" onClick={onClose}>
                         Cancelar
                     </Button>
