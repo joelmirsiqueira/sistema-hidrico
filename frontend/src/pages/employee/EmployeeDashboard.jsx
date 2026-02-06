@@ -5,6 +5,7 @@ import Header from "../../components/layout/Header";
 import ReservoirLevelCard from "../../components/dashboard/ReservoirLevelCard";
 import WaterGatesCard from "../../components/dashboard/WaterGatesCard";
 import ListClientsCard from "../../components/dashboard/ListClientsCard";
+import ListReportCard from "../../components/dashboard/ListReportCard";
 
 export default function EmployeeDashboard() {
     const [waterGates, setWaterGates] = useState([]);
@@ -105,6 +106,7 @@ export default function EmployeeDashboard() {
 
                 <Box sx={{display: "flex", flex: 1, gap: "15px"}}>
                     <ListClientsCard />
+                    <ListReportCard />
                 </Box>
             </Box>
         </Box>
