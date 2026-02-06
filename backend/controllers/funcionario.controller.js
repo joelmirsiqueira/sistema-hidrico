@@ -6,7 +6,6 @@ import { respostaUsuarioDto } from '../dtos/usuario.dto.js';
 import { respostaRelatoDto } from '../dtos/relato.dto.js';
 import { respostaComportaDto, respostaNivelDto } from '../dtos/mqtt.dto.js';
 import Consumo from '../models/consumo.model.js';
-import { listarConsumos } from './cliente.controller.js';
 
 export async function criarFuncionario(req, res) {
     const { nome, email, senha } = req.body;
@@ -146,7 +145,15 @@ export async function listarRelatos(req, res) {
             return res.status(404).json({ error: 'Nenhum relato encontrado' });
         }
 
-        const relatos = consulta.map(relato => respostaRelatoDto.parse(relato));
+        const relatos = consulta.map(relato =>
+            respostaRelatoDto.parse({
+                ...relato.toObject(),
+                _id: relato._id.toString(),
+                cliente: relato.cliente.toString(),
+                createdAt: relato.createdAt.toISOString(),
+                updatedAt: relato.updatedAt.toISOString(),
+            })
+        );
 
         res.status(200).json(relatos);
     } catch (error) {

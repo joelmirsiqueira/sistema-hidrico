@@ -7,10 +7,10 @@ export const criarRelatoDto = z.object({
 export const atualizarRelatoDto = criarRelatoDto.partial();
 
 export const respostaRelatoDto = z.object({
-    id: z.string(),
+    _id: z.string(),
     cliente: z.string(),
     mensagem: z.string(),
     status: z.string(),
-    createdAt: z.date(),
-    updatedAt: z.date(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
 });
