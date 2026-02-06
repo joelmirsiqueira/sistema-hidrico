@@ -28,7 +28,10 @@ export async function criarCliente(req, res) {
 
     try {
         const consulta = await Cliente.create({ nome, email, senha, codigoCliente, comporta, endereco });
-        const cliente = respostaUsuarioDto.parse(consulta);
+        const cliente = respostaUsuarioDto.parse({
+            ...consulta.toObject(),
+            _id: consulta._id.toString(),
+        });
         res.status(201).json({ message: 'Cliente criado com sucesso', cliente });
     } catch (error) {
         if (error.code === 11000) {
