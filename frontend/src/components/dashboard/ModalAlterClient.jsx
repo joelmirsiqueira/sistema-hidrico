@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { Modal, ModalDialog, Typography, Box, Button, Divider, Input, FormControl, FormLabel, Alert } from "@mui/joy";
+import { Modal, ModalDialog, Typography, Box, Button, Divider, Input, FormControl, FormLabel, Alert, Snackbar } from "@mui/joy";
 
 export default function ModalAlterClient({ open, onClose, cliente }) {
-    const [erro, setErro] = useState("");
-    const [sucesso, setSucesso] = useState("");
     const [loading, setLoading] = useState(false);
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        message: "",
+        color: "success",
+    });
 
     const [form, setForm] = useState({
         nome: "",
@@ -59,14 +62,16 @@ export default function ModalAlterClient({ open, onClose, cliente }) {
 
         for (const campo of camposObrigatorios) {
             if (!form[campo] || form[campo].toString().trim() === "") {
-                setErro("Preencha todos os campos obrigatórios.");
+                setSnackbar({
+                    open: true,
+                    message: "Preencha todos os campos obrigatórios.",
+                    color: "danger",
+                });
                 return;
             }
         }
 
         try {
-            setErro("");
-            setSucesso("");
             setLoading(true);
 
             const token = localStorage.getItem("token");
@@ -74,9 +79,10 @@ export default function ModalAlterClient({ open, onClose, cliente }) {
             const payload = {
                 nome: form.nome,
                 email: form.email,
+                comporta: form.comporta,
                 endereco: {
                     rua: form.rua,
-                    numero: form.numero,
+                    numero: Number(form.numero),
                     bairro: form.bairro,
                 },
             };
@@ -99,116 +105,130 @@ export default function ModalAlterClient({ open, onClose, cliente }) {
                 throw new Error(data.error || "Erro ao atualizar cliente");
             }
 
-            setSucesso("Cliente atualizado com sucesso!");
+            setSnackbar({
+                open: true,
+                message: "Cliente atualizado com sucesso!",
+                color: "success",
+            });
         } catch (error) {
-            setErro(error.message);
+            setSnackbar({
+                open: true,
+                message: error.message,
+                color: "danger",
+            });
         } finally {
             setLoading(false);
         }
     }
 
     return (
-        <Modal open={open} onClose={onClose}>
-            <ModalDialog sx={{
-                minWidth: "400px",
-                width: "50%",
-                maxWidth: "800px",
-
-            }}>
-                <Typography level="h4">Alterar dados do cliente</Typography>
-
-                <Divider />
-
-                <Box sx={{
-                    width: "80%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignSelf: "center",
-                    gap: "10px"
+        <>
+            <Modal open={open} onClose={onClose}>
+                <ModalDialog sx={{
+                    minWidth: "400px",
+                    width: "50%",
+                    maxWidth: "800px",
 
                 }}>
-                    <FormControl>
-                        <FormLabel>Nome do cliente</FormLabel>
-                        <Input required
-                            name="nome"
-                            value={form.nome}
-                            onChange={handleChange}
-                            placeholder="Ex: João Silva"
-                        />
-                    </FormControl>
+                    <Typography level="h4">Alterar dados do cliente</Typography>
 
-                    <FormControl>
-                        <FormLabel>E-mail</FormLabel>
-                        <Input required
-                            name="email"
-                            value={form.email}
-                            onChange={handleChange}
-                            placeholder="cliente@email.com"
-                        />
-                    </FormControl>
+                    <Divider />
 
-                    <FormControl>
-                        <FormLabel>Comporta</FormLabel>
-                        <Input required
-                            disabled
-                            name="comporta"
-                            value={form.comporta}
-                            onChange={handleChange}
-                            placeholder="Ex: C-12"
-                        />
-                    </FormControl>
+                    <Box sx={{
+                        width: "80%",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignSelf: "center",
+                        gap: "10px"
 
-                    <FormControl>
-                        <FormLabel>Rua</FormLabel>
-                        <Input required
-                            name="rua"
-                            value={form.rua}
-                            onChange={handleChange}
-                        />
-                    </FormControl>
+                    }}>
+                        <FormControl>
+                            <FormLabel>Nome do cliente</FormLabel>
+                            <Input required
+                                name="nome"
+                                value={form.nome}
+                                onChange={handleChange}
+                                placeholder="Ex: João Silva"
+                            />
+                        </FormControl>
 
-                    <FormControl>
-                        <FormLabel>Número</FormLabel>
-                        <Input required
-                            name="numero"
-                            value={form.numero}
-                            onChange={handleChange}
-                        />
-                    </FormControl>
+                        <FormControl>
+                            <FormLabel>E-mail</FormLabel>
+                            <Input required
+                                name="email"
+                                value={form.email}
+                                onChange={handleChange}
+                                placeholder="cliente@email.com"
+                            />
+                        </FormControl>
 
-                    <FormControl>
-                        <FormLabel>Bairro</FormLabel>
-                        <Input required
-                            name="bairro"
-                            value={form.bairro}
-                            onChange={handleChange}
-                        />
-                    </FormControl>
-                </Box>
+                        <FormControl>
+                            <FormLabel>Comporta</FormLabel>
+                            <Input required
+                                disabled
+                                name="comporta"
+                                value={form.comporta}
+                                onChange={handleChange}
+                                placeholder="Ex: C-12"
+                            />
+                        </FormControl>
 
-                <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 3 }}>
-                    {erro && (
-                        <Alert color="danger" variant="soft">
-                            {erro}
-                        </Alert>
-                    )}
+                        <FormControl>
+                            <FormLabel>Rua</FormLabel>
+                            <Input required
+                                name="rua"
+                                value={form.rua}
+                                onChange={handleChange}
+                            />
+                        </FormControl>
 
-                    {sucesso && (
-                        <Alert color="success" variant="soft">
-                            {sucesso}
-                        </Alert>
-                    )}
+                        <FormControl>
+                            <FormLabel>Número</FormLabel>
+                            <Input required
+                                name="numero"
+                                value={form.numero}
+                                onChange={handleChange}
+                            />
+                        </FormControl>
 
-                    <Button variant="plain" onClick={onClose}>
-                        Cancelar
-                    </Button>
+                        <FormControl>
+                            <FormLabel>Bairro</FormLabel>
+                            <Input required
+                                name="bairro"
+                                value={form.bairro}
+                                onChange={handleChange}
+                            />
+                        </FormControl>
+                    </Box>
 
-                    <Button color="primary" onClick={handleSubmit}>
-                        {cliente ? "Salvar alterações" : "Criar cliente"}
-                    </Button>
-                </Box>
-            </ModalDialog>
-        </Modal >
+                    <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 3 }}>
+                        <Button variant="plain" onClick={onClose}>
+                            Cancelar
+                        </Button>
+
+                        <Button color="primary" onClick={handleSubmit}>
+                            {cliente ? "Salvar alterações" : "Criar cliente"}
+                        </Button>
+                    </Box>
+                </ModalDialog>
+            </Modal >
+            <Snackbar
+                open={snackbar.open}
+                color={snackbar.color}
+                variant="solid"
+                autoHideDuration={4000}
+                onClose={() => setSnackbar({ ...snackbar, open: false })}
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                }}
+                sx={{
+                    zIndex: 1500,
+                }}
+            >
+                {snackbar.message}
+            </Snackbar>
+        </>
     );
 }
