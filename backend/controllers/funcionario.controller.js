@@ -49,7 +49,10 @@ export async function atualizarCliente(req, res) {
             return res.status(404).json({ error: 'Cliente não encontrado' });
         }
 
-        const cliente = respostaUsuarioDto.parse(consulta);
+        const cliente = respostaUsuarioDto.parse({
+            ...consulta.toObject(),
+            _id: consulta._id.toString(),
+        });
 
         res.status(200).json({ message: 'Cliente atualizado com sucesso', cliente });
     } catch (error) {
@@ -119,7 +122,12 @@ export async function listarClientes(req, res) {
             return res.status(404).json({ error: 'Nenhum cliente encontrado' });
         }
 
-        const clientes = consulta.map(cliente => respostaUsuarioDto.parse(cliente));
+        const clientes = consulta.map(cliente =>
+            respostaUsuarioDto.parse({
+                ...cliente.toObject(),
+                _id: cliente._id.toString(),
+            })
+        );
 
         res.status(200).json(clientes);
     } catch (error) {
