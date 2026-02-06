@@ -167,8 +167,8 @@ static void set_comporta(esp_mqtt_event_handle_t event)
     if (vazio && comando_value == 0)
     {
         ESP_LOGE(TAG, "Reservatório vazio");
-        esp_mqtt_client_publish(cliente_mqtt, topic, "off", 0, 0, 0);
         esp_mqtt_client_publish(cliente_mqtt, TOPICO_ERROR_LOG, "Reservatório vazio", 0, 0, 0);
+        esp_mqtt_client_publish(cliente_mqtt, topic, "off", 0, 0, 0);
         return;
     }
     
