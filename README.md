@@ -118,4 +118,5 @@ npm run dev
 ## 👥 Equipe
 
 - Joelmir Siqueira
-- *(Adicionar outros membros da equipe)*
+- Jalmir Siqueira
+- Daniel Ferreira
